@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/bt_setting01"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@color/colorPrimary"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:text="环境亮度"
+            android:textSize="25sp"/>
+
+        <Button
+            android:id="@+id/bt_setting02"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@color/colorPrimary"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:text="护眼时间"
+            android:textSize="25sp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/bt_setting03"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@color/colorPrimary"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:text="亮度调节"
+            android:textSize="25sp"/>
+
+        <Button
+            android:id="@+id/bt_setting04"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@color/colorPrimary"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:text="坐姿标准"
+            android:textSize="25sp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/bt_setting05"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@color/colorPrimary"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:text="闹钟提醒"
+            android:textSize="25sp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

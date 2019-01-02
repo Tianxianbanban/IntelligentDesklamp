@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_home"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/bt_home01"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true"
+        android:layout_margin="10dp"
+        android:text="智能听写"
+        android:textSize="25sp"/>
+
+    <Button
+        android:id="@+id/bt_home02"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_margin="10dp"
+        android:text="学习情况"
+        android:textSize="25sp"/>
+
+</RelativeLayout>
