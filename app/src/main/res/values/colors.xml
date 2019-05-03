@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <!--<color name="colorPrimary">#008577</color>-->
+    <color name="colorPrimary">#22DDDD</color>
+    <color name="colorPrimaryDark">#C4E6E6</color>
     <color name="colorAccent">#D81B60</color>
+    
+    <color name="colorGrey">#EEEEEE</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorDarkgray">#919191</color>
+    <color name="colorGreen">#22DD92</color>
+    <color name="colorLightgray">#CAC9CF</color>
+    <color name="colorLightBlue">#C4E6E6</color>
+    <color name="colorRed">#FF1111</color>
+
+
+    <!--饼状图颜色-->
+    <color name="piecolor_1">#C4E6E6</color>
+    <color name="piecolor_2">#F1F141</color>
+    <color name="piecolor_3">#A4F790</color>
+    <color name="piecolor_4">#FF8F44</color>
+    <color name="piecolor_5">#FFBBD6</color>
+    <color name="piecolor_6">#A3B0C2</color>
+    <color name="piecolor_7">#FF9277</color>
+
 </resources>

@@ -1,83 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/rl_home"
+android:background="@color/colorGrey"
+android:orientation="vertical"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <Button
-            android:id="@+id/bt_setting01"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:background="@color/colorPrimary"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:layout_margin="10dp"
-            android:text="环境亮度"
-            android:textSize="25sp"/>
-
-        <Button
-            android:id="@+id/bt_setting02"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:background="@color/colorPrimary"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:layout_margin="10dp"
-            android:text="护眼时间"
-            android:textSize="25sp"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp">
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize">
+                <TextView
+                    android:textColor="@color/colorBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+               <Button
+                   android:id="@+id/bt_efficency_addtodo"
+                   android:background="@drawable/more"
+                   android:layout_centerVertical="true"
+                   android:layout_alignParentRight="true"
+                   android:layout_marginRight="15dp"
+                   android:layout_width="30dp"
+                   android:layout_height="30dp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/image_efficency_background"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            android:layout_width="200dp"
+            android:layout_height="200dp" />
+        <ListView
+            android:id="@+id/lv_efficency_todo"
+            android:divider="@null"
+            android:dividerHeight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </ListView>
+    </FrameLayout>
 
-        <Button
-            android:id="@+id/bt_setting03"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:background="@color/colorPrimary"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:layout_margin="10dp"
-            android:text="亮度调节"
-            android:textSize="25sp"/>
-
-        <Button
-            android:id="@+id/bt_setting04"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:background="@color/colorPrimary"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:layout_margin="10dp"
-            android:text="坐姿标准"
-            android:textSize="25sp"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <Button
-            android:id="@+id/bt_setting05"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:background="@color/colorPrimary"
-            android:layout_centerInParent="true"
-            android:layout_margin="10dp"
-            android:text="闹钟提醒"
-            android:textSize="25sp"/>
-
-    </RelativeLayout>
 
 </LinearLayout>

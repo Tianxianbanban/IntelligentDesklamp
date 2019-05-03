@@ -1,22 +1,31 @@
 package com.tz.intelligentdesklamp;
 
+/**
+ * 主活动
+ */
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.tz.intelligentdesklamp.activity.datafragment.BaseDataActivity;
 import com.tz.intelligentdesklamp.base.BaseFragment;
 import com.tz.intelligentdesklamp.fragment.HomeFragment;
 import com.tz.intelligentdesklamp.fragment.PersonFragment;
+import com.tz.intelligentdesklamp.fragment.PlanFragment;
 import com.tz.intelligentdesklamp.fragment.SettingFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends BaseDataActivity {
+    String TAG="MainActivity";
 
     private Fragment mContent;
     private int position;
@@ -39,11 +48,17 @@ public class MainActivity extends AppCompatActivity {
                     to = getFragment();
                     switchFragment(mContent,to);
                     return true;
-                case R.id.navigation_person:
+                case R.id.navigation_plan:
                     position=2;
                     to = getFragment();
                     switchFragment(mContent,to);
                     return true;
+                case R.id.navigation_person:
+                    position=3;
+                    to = getFragment();
+                    switchFragment(mContent,to);
+                    return true;
+
             }
             return false;
         }
@@ -59,12 +74,14 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_home);
+
     }
 
     private void initFragment() {
         mBaseFragment = new ArrayList<>();
         mBaseFragment.add(new HomeFragment());
         mBaseFragment.add(new SettingFragment());
+        mBaseFragment.add(new PlanFragment());
         mBaseFragment.add(new PersonFragment());
     }
 
@@ -96,6 +113,38 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
-
     }
+
+
+    /**
+     * 按键两次退出
+     */
+    private long clickTime = 0; // 第一次点击的时间
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // 是否触发按键为back键
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            onBackPressed();
+            return true;
+        } else { // 如果不是back键正常响应
+            return super.onKeyDown(keyCode, event);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        exit();
+    }
+
+    private void exit() {
+        if ((System.currentTimeMillis() - clickTime) > 2000) {
+            Toast.makeText(this, "再按一次后退键退出程序", Toast.LENGTH_SHORT).show();
+            clickTime = System.currentTimeMillis();
+        } else {
+            this.finish();
+        }
+    }
+
+
 }

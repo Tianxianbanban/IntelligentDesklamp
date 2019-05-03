@@ -2,6 +2,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tz.intelligentdesklamp">
 
+    <!-- 网络相关的权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 关于本地图库 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 点亮屏幕 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- 台灯控制部分，语音相关 -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <!-- android:name="org.litepal.LitePalApplication" -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,14 +27,32 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:configChanges="orientation|screenSize|keyboardHidden">
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/app_name"></activity>
+        <activity android:name=".activity.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.PersonalInfo" />
+        <activity android:name=".activity.PictureShow" />
+        <activity android:name=".activity.Register" />
+        <activity android:name=".activity.ChangeContentInput" />
+        <activity android:name=".activity.datafragment.DataPosture" />
+        <activity android:name=".activity.datafragment.DataScore" />
+        <activity android:name=".activity.datafragment.LearningTime" />
+        <activity android:name=".activity.datafragment.AttentionDetails" />
+
+        <service
+            android:name=".service.MyService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".activity.datafragment.BaseDataActivity" />
+        <activity android:name=".activity.TodoItemStart"></activity>
+        <activity android:name=".base.BaseActivity"></activity>
     </application>
 
 </manifest>
