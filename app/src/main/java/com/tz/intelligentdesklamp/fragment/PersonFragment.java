@@ -126,6 +126,8 @@ public class PersonFragment extends BaseFragment {
         changeBack = (Button) view.findViewById(R.id.bt_frag_person_changeImage);
         tx_frag_person_usernickname=(TextView)view.findViewById(R.id.tx_frag_person_usernickname);
 
+        //获取数据进行界面初始设置
+        initData();
 
         //点击事件
         changeBack.setOnClickListener(new View.OnClickListener() {
@@ -234,30 +236,24 @@ public class PersonFragment extends BaseFragment {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String responseData=response.body().string();
-                        try{
-                            //解析
-                            Gson gson=new Gson();
-                            JsonQueryBackgrounds jsonQueryBackgrounds=gson.fromJson(responseData,
-                                    new TypeToken<JsonQueryBackgrounds>(){}.getType());
-                            if (jsonQueryBackgrounds.getCode()==0){//得到正常返回数据
-                                //将list部分倒退为json数据
-                                String pictureListJson = gson.toJson(jsonQueryBackgrounds.getData().getBackgrounds());
-                                //将这段数据存储，将系统图片的url保存，之后使用
-                                SharedPreferences.Editor pictureEditor=getContext().getSharedPreferences("picture_data",MODE_PRIVATE).edit();
-                                pictureEditor.putString("pictureList",pictureListJson);
-                                pictureEditor.apply();
-                                //跳转，展示图片
-                                Intent pictureShowIntent=new Intent(getContext(),PictureShow.class);
-                                startActivity(pictureShowIntent);
-                                handler.sendEmptyMessage(SHOW_SUCCESS);//跳转活动
-                            }else{
-                                handler.sendEmptyMessage(SHOW_UNKOWN);//服务器故障
-                            }
-
-                        }catch (Exception e){
-
+                        //解析
+                        Gson gson=new Gson();
+                        JsonQueryBackgrounds jsonQueryBackgrounds=gson.fromJson(responseData,
+                                new TypeToken<JsonQueryBackgrounds>(){}.getType());
+                        if (jsonQueryBackgrounds.getCode()==0){//得到正常返回数据
+                            //将list部分倒退为json数据
+                            String pictureListJson = gson.toJson(jsonQueryBackgrounds.getData().getBackgrounds());
+                            //将这段数据存储，将系统图片的url保存，之后使用
+                            SharedPreferences.Editor pictureEditor=getContext().getSharedPreferences("picture_data",MODE_PRIVATE).edit();
+                            pictureEditor.putString("pictureList",pictureListJson);
+                            pictureEditor.apply();
+                            //跳转，展示图片
+                            Intent pictureShowIntent=new Intent(getContext(),PictureShow.class);
+                            startActivity(pictureShowIntent);
+                            handler.sendEmptyMessage(SHOW_SUCCESS);//跳转活动
+                        }else{
+                            handler.sendEmptyMessage(SHOW_UNKOWN);//服务器故障
                         }
-
                     }
                 });
             }
@@ -369,16 +365,6 @@ public class PersonFragment extends BaseFragment {
         return background;
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        initData();
-        Log.d(TAG, "onResume: 更新个人信息");
-    }
-
-    
-
     @Override
     protected void initData() {
         super.initData();
@@ -395,50 +381,54 @@ public class PersonFragment extends BaseFragment {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseData=response.body().string();
-                Log.d(TAG, "获取个人信息----onResponse:"+responseData);
-                try{
-                    if (response.code()==200){
-                        //解析
-                        Gson gson=new Gson();
-                        GetUserInfo getUserInfo=gson.fromJson(responseData,new TypeToken<GetUserInfo>(){}.getType());
-                        if (getUserInfo.getCode()==0){
-                            //解析具体数据
-                            int id=getUserInfo.getData().getUserInfo().getId();
-                            String age=getUserInfo.getData().getUserInfo().getAge();//
-                            boolean sex=getUserInfo.getData().getUserInfo().isSex();//性别是int
-                            String phoneNum=getUserInfo.getData().getUserInfo().getPhoneNum();
-                            String email=getUserInfo.getData().getUserInfo().getEmail();
-                            String region=getUserInfo.getData().getUserInfo().getRegion();
-                            String imagePath=getUserInfo.getData().getUserInfo().getImagePath();
-                            String nickName=getUserInfo.getData().getUserInfo().getNickName();
-                            String backgroundPath=getUserInfo.getData().getUserInfo().getBackgroundPath();
-                            if(backgroundPath!=null){
-                                //加载背景
-                                Glide.with(PersonFragment.this).load(backgroundPath).into(background);
-                            }
-                            Log.d(TAG, "onResponse: information "+"id "+id+" age "+age+" sex "+sex+" phoneNum "+phoneNum+" email "+email+" region "+" region+imagePath "+imagePath+" nickName "+nickName+" backgroundPath "+backgroundPath);
-                            //昵称则进行修改
-                            Message message=new Message();
-                            message.what=INFO_CHANGE;
-                            message.obj=nickName;
-                            handler.sendMessage(message);//传递修改昵称
-                            //其他的获取到的个人信息进行保存
-                            SharedPreferences.Editor editor=getContext().getSharedPreferences("userInfo_data",MODE_PRIVATE).edit();
-                            editor.putInt("id",id);
-                            editor.putString("age",age);
-                            editor.putBoolean("sex",sex);//性别
-                            editor.putString("phoneNum",phoneNum);
-                            editor.putString("email",email);
-                            editor.putString("region",region);
-                            editor.putString("imagePath",imagePath);
-                            editor.putString("nickName",nickName);
-                            editor.putString("backgroundPath",backgroundPath);
-                            editor.apply();
+                Log.d(TAG, "onResponse: "+responseData);
+                if (response.code()==200){
+                    //解析
+                    Gson gson=new Gson();
+                    GetUserInfo getUserInfo=gson.fromJson(responseData,new TypeToken<GetUserInfo>(){}.getType());
+                    if (getUserInfo.getCode()==0){
+                        //解析具体数据
+                        int id=getUserInfo.getData().getUserInfo().getId();
+                        String age=getUserInfo.getData().getUserInfo().getAge();//
+                        boolean sex=getUserInfo.getData().getUserInfo().isSex();//性别是int
+                        String phoneNum=getUserInfo.getData().getUserInfo().getPhoneNum();
+                        String email=getUserInfo.getData().getUserInfo().getEmail();
+                        String region=getUserInfo.getData().getUserInfo().getRegion();
+                        String imagePath=getUserInfo.getData().getUserInfo().getImagePath();
+                        String nickName=getUserInfo.getData().getUserInfo().getNickName();
+                        String backgroundPath=getUserInfo.getData().getUserInfo().getBackgroundPath();
+                        if(backgroundPath!=null){
+                            //加载背景
+                            Glide.with(PersonFragment.this).load(backgroundPath).into(background);
                         }
+                        Log.d(TAG, "onResponse: information "+"id "+id+" age "+age+" sex "+sex+" phoneNum "+phoneNum+" email "+email+" region "+" region+imagePath "+imagePath+" nickName "+nickName+" backgroundPath "+backgroundPath);
+                        //昵称则进行修改
+                        Message message=new Message();
+                        message.what=INFO_CHANGE;
+                        message.obj=nickName;
+                        handler.sendMessage(message);//传递修改昵称
+                        //其他的获取到的个人信息进行保存
+                        SharedPreferences.Editor editor=getContext().getSharedPreferences("userInfo_data",MODE_PRIVATE).edit();
+                        editor.putInt("id",id);
+                        editor.putString("age",age);
+                        if (sex==true){
+                            editor.putInt("sex",1);
+                        }else if (sex==false){
+                            editor.putInt("sex",0);
+                        }else {
+                            editor.putInt("sex",-1);
+                        }
+                        editor.putString("phoneNum",phoneNum);
+                        editor.putString("email",email);
+                        editor.putString("region",region);
+                        editor.putString("imagePath",imagePath);
+                        editor.putString("nickName",nickName);
+                        editor.putString("backgroundPath",backgroundPath);
+                        editor.apply();
                     }
-                }catch (Exception e){
-                    e.printStackTrace();
                 }
+
+
 
             }
         });

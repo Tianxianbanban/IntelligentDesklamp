@@ -6,6 +6,7 @@ package com.tz.intelligentdesklamp.fragment;
 
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Gravity;
@@ -15,34 +16,27 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tz.intelligentdesklamp.R;
 import com.tz.intelligentdesklamp.adpter.TodoListAdapter;
 import com.tz.intelligentdesklamp.base.BaseFragment;
-import com.tz.intelligentdesklamp.bean.my_info_tosave.TaskAndTime;
+import com.tz.intelligentdesklamp.bean.JsonLogin;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 import static android.content.Context.MODE_PRIVATE;
 
 public class SettingFragment extends BaseFragment{
-    String TAG="SettingFragment";
-    private List<TaskAndTime> taskAndTimes=new ArrayList<>();//修改之后的任务列表
+    private List<String> todoList=new ArrayList<>();//展示待办事项
     ListView lv_efficency_todo;//列表
     Button bt_efficency_addtodo;//添加任务
-    private TaskAndTime taskAndTime;//存储任务项
     TodoListAdapter todoListAdapter;
-//    private Button bt_todo_item_edit;//编辑
-    ImageView image_efficency_background;
+    private Button bt_todo_item_edit;//编辑
 
 
     @Override
@@ -50,24 +44,47 @@ public class SettingFragment extends BaseFragment{
         View view = View.inflate(mContext, R.layout.fragment_setting, null);
         lv_efficency_todo=(ListView)view.findViewById(R.id.lv_efficency_todo);
         bt_efficency_addtodo=(Button)view.findViewById(R.id.bt_efficency_addtodo);
-        image_efficency_background=(ImageView) view.findViewById(R.id.image_efficency_background);
-//        bt_todo_item_edit=(Button)view.findViewById(R.id.bt_todo_item_edit);//去除了编辑
-
+        bt_todo_item_edit=(Button)view.findViewById(R.id.bt_todo_item_edit);
 
         bt_efficency_addtodo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showBottomInput();//添加任务，弹出输入框
+                showBottomInput(null);//添加任务
             }
         });
 
-        refreshData();
+//        bt_todo_item_edit.setOnClickListener(new View.OnClickListener() {//点击编辑
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(getContext(),"编辑",Toast.LENGTH_SHORT);
+//            }
+//        });
+
+        //内容
+//        todoList.add("任务添加在这里");
+//        todoList.add("hhh");
+//        todoList.add("ooo");
+//        todoList.add("ppp");
+
+        String items =getContext().getSharedPreferences("todoList_data", MODE_PRIVATE)
+                .getString("todoList", "data_null");
+        Log.d("items", "initView: "+items);
+//        Gson gson=new Gson();
+//        todoList=gson.fromJson(items,new TypeToken<List<String>>(){}.getType());
+        //取出内容
+        if (todoList.size()>0){
+            Log.d("itemsToGet", "initView: "+todoList.toString());
+        }
+
+//        todoListAdapter=new TodoListAdapter(getContext(),R.layout.item_of_todo,todoList);
+        todoListAdapter=new TodoListAdapter(getContext(),todoList);
+        lv_efficency_todo.setAdapter(todoListAdapter);
 
         return view;
     }
 
     //展示底部输入框
-    public void showBottomInput() {
+    public void showBottomInput(String content) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.bottom_menu_todo_input, null);
         final Dialog dialog = new Dialog(getContext());
         Window window = dialog.getWindow();
@@ -82,12 +99,11 @@ public class SettingFragment extends BaseFragment{
 
         TextView tx_todo_cancel=(TextView)view.findViewById(R.id.tx_todo_cancel);
         TextView tx_todo_save=(TextView)view.findViewById(R.id.tx_todo_save);
-        final EditText et_todo_taskinput=(EditText)view.findViewById(R.id.et_todo_taskinput);//任务添加内容
-        final EditText et_todo_timeinput=(EditText)view.findViewById(R.id.et_todo_timeinput);//预估时间填写
-
+        final EditText et_todo_taskinput=(EditText)view.findViewById(R.id.et_todo_taskinput);
+        et_todo_taskinput.setText(content);
 
         //点击事件
-        tx_todo_cancel.setOnClickListener(new View.OnClickListener() {//取消添加
+        tx_todo_cancel.setOnClickListener(new View.OnClickListener() {//取消
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
@@ -96,75 +112,27 @@ public class SettingFragment extends BaseFragment{
         tx_todo_save.setOnClickListener(new View.OnClickListener() {//保存添加
             @Override
             public void onClick(View view) {
-                String taskWaitToAdd=et_todo_taskinput.getText().toString();//等待存储的任务内容
-                String timeWaitToAdd=et_todo_timeinput.getText().toString();
-                int timeWaitToDo=-1;
-                //将时间转换成数字
-                if (timeWaitToAdd.trim().equals("")||taskWaitToAdd.trim().equals("")){
-                    Toast.makeText(mContext,"还没有填写完任务清单哦~~~",Toast.LENGTH_SHORT).show();
+                String taskWaittoAdd=et_todo_taskinput.getText().toString();
+                if (taskWaittoAdd.equals("")){
+                    dialog.dismiss();
                 }else{
-                    try{
-                        timeWaitToDo=Integer.parseInt(timeWaitToAdd);
-                    }catch (Exception e){
-                        Log.d(TAG, "onClick: Integer.parseInt解析异常");
-                        Toast.makeText(mContext,"请填写预估时间呢~",Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                //保存之前进行条件判断
-                if (timeWaitToDo<0){
-
-                }else if (taskWaitToAdd.length()>200){
-                    Toast.makeText(mContext,"可以精简任务描述呢~~~",Toast.LENGTH_SHORT).show();
-                }else if (timeWaitToDo>250){
-                    Toast.makeText(mContext,"劳逸结合，效率会更高呢！",Toast.LENGTH_SHORT).show();
-                }else{
-                    //添加并设置适配器
-                    taskAndTime=new TaskAndTime();
-                    taskAndTime.setTask(taskWaitToAdd);
-                    taskAndTime.setTime(String.valueOf(timeWaitToAdd));
-                    taskAndTime.setFlag(false);//0即是未完成
-                    taskAndTimes.add(taskAndTime);//已经添加，修改之后
-                    todoListAdapter=new TodoListAdapter(getContext(),taskAndTimes);
+                    todoList.add(taskWaittoAdd);
+                    todoListAdapter=new TodoListAdapter(getContext(),todoList);
                     lv_efficency_todo.setAdapter(todoListAdapter);
-                    //将todoList转换成gson进行SP存储
+
                     Gson gson=new Gson();
-                    String itemsToSave=gson.toJson(taskAndTimes);
+                    String itemsToSave=gson.toJson(todoList);
                     SharedPreferences.Editor editor=getContext().getSharedPreferences("todoList_data",MODE_PRIVATE).edit();
+//                    editor.putString("todoList",todoList.toString());
                     editor.putString("todoList",itemsToSave);
+//                    Log.d("todoList.toString()", "onClick: "+todoList.toString());
+                    Log.d("todoList.toString()", "onClick: "+itemsToSave);
                     editor.apply();
-                    Log.d(TAG, "onClick: todoList.toString() 所有任务存储内容："+itemsToSave);
                     dialog.dismiss();
                 }
+
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        refreshData();
-        Log.d(TAG, "onResume: ==========================");
-    }
-
-    private void refreshData(){
-        String items =getContext().getSharedPreferences("todoList_data", MODE_PRIVATE).getString("todoList", "data_null");
-        Log.d(TAG, "initView: "+items);
-
-        try{
-            Gson gson=new Gson();
-            taskAndTimes=gson.fromJson(items,new TypeToken<List<TaskAndTime>>(){}.getType());
-            if (taskAndTimes.size()==0){
-                image_efficency_background.setVisibility(View.VISIBLE);
-                Glide.with(getContext()).load(R.drawable.plan_paper).into(image_efficency_background);
-            }
-            todoListAdapter=new TodoListAdapter(getContext(),taskAndTimes);
-            todoListAdapter.notifyDataSetChanged();
-            lv_efficency_todo.setAdapter(todoListAdapter);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
 
     }
 

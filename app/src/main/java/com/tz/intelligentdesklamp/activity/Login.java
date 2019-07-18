@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.tz.intelligentdesklamp.base.BaseActivity;
 import com.tz.intelligentdesklamp.bean.JsonLogin;
 import com.tz.intelligentdesklamp.MainActivity;
 import com.tz.intelligentdesklamp.util.network.HttpUtil;
@@ -34,7 +33,7 @@ import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class Login extends BaseActivity implements View.OnClickListener {
+public class Login extends AppCompatActivity implements View.OnClickListener {
 
     private  static String token=null;
     private  static int id;
@@ -50,7 +49,6 @@ public class Login extends BaseActivity implements View.OnClickListener {
     private TextView tx_login_register;//注册
 
     private Handler handler=new Handler(){
-
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -58,7 +56,6 @@ public class Login extends BaseActivity implements View.OnClickListener {
                     HttpUtil.showSuccess(Login.this,"登录成功!");
                     Intent intent=new Intent(Login.this,MainActivity.class);
                     startActivity(intent);
-                    finish();
                     break;
                 case WHAT_ERROR://密码错误
                     HttpUtil.showWrong(Login.this,"密码或账号错误，请确认信息！");

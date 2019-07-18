@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGrey"
+    android:orientation="vertical"
+    tools:context=".activity.PersonalInfo">
+
+    <LinearLayout
+        android:id="@+id/personalInfo_head"
+        android:layout_width="match_parent"
+        android:clickable="true"
+        android:background="@drawable/all_state"
+        android:layout_height="100dp">
+        <include layout="@layout/head_of_personalinfo"/>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="5dp" />
+
+    <include layout="@layout/sex"></include>
+    <include layout="@layout/grade"></include>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="5dp" />
+
+    <ListView
+        android:background="@color/colorWhite"
+        android:id="@+id/lv_personalinfo_text"
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </ListView>
+
+
+</LinearLayout>

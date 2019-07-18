@@ -15,7 +15,7 @@ android:layout_height="match_parent">
             android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="20dp">
+                android:layout_height="10dp">
             </LinearLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -35,23 +35,11 @@ android:layout_height="match_parent">
             </RelativeLayout>
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
-    <FrameLayout
+
+    <ListView
+        android:id="@+id/lv_efficency_todo"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ImageView
-            android:id="@+id/image_efficency_background"
-            android:visibility="invisible"
-            android:layout_gravity="center"
-            android:layout_width="200dp"
-            android:layout_height="200dp" />
-        <ListView
-            android:id="@+id/lv_efficency_todo"
-            android:divider="@null"
-            android:dividerHeight="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </ListView>
-    </FrameLayout>
-
+    </ListView>
 
 </LinearLayout>

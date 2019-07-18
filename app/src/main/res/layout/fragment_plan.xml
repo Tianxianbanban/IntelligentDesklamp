@@ -1,67 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/colorLightBlue">
-
-    <FrameLayout
-        android:id="@+id/ll_reset"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp">
-        <ImageView
-            android:id="@+id/image_show_cloud_1"
-            android:layout_gravity="top|right"
-            android:layout_width="150dp"
-            android:layout_height="150dp" />
-        <ImageView
-            android:id="@+id/image_show_cloud_2"
-            android:layout_gravity="bottom|right"
-            android:layout_width="200dp"
-            android:layout_height="200dp" />
-
-        <ImageView
-            android:id="@+id/image_show_cloud"
-            android:layout_gravity="right|top"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/tv_show_mode_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="text"
-            android:layout_marginTop="40dp"
-            android:textColor="@color/colorBlack"
-            android:textSize="22sp"/>
-
-    </FrameLayout>
-
-
-    <include layout="@layout/music_front" />
-
-    <FrameLayout
-        android:id="@+id/fl_mode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <include layout="@layout/mode_back" />
-
-        <include layout="@layout/mode_front"/>
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/fl_brightness"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <include layout="@layout/brightness_back" />
-
-        <include layout="@layout/brightness_front"/>
-
-    </FrameLayout>
+    android:orientation="vertical">
+    <TextView
+        android:text="计划"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

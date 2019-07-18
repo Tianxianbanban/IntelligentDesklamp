@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.datafragment.AttentionDetails">
+    <android.support.v7.widget.Toolbar
+        android:background="@color/colorLightBlue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="10dp">
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize">
+                <TextView
+                    android:id="@+id/tx_data_posture_back"
+                    android:text="返回"
+                    android:textSize="20sp"
+                    android:clickable="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <Button
+                        android:id="@+id/bt_data_posture_date_cut"
+                        android:background="@drawable/left"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp" />
+                    <TextView
+                        android:id="@+id/tx_data_posture_date"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:text="2019-01-24"
+                        android:textSize="15sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <Button
+                        android:id="@+id/bt_data_posture_date_add"
+                        android:background="@drawable/right"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp" />
+                </LinearLayout>
+                <TextView
+                    android:text="坐姿数据"
+                    android:textSize="15sp"
+                    android:layout_marginRight="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:layout_height="0dp">
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pie_chat_data_posture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:background="@drawable/attention_data_show"
+        android:layout_width="match_parent"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginVertical="5dp"
+        android:layout_height="50dp">
+        <TextView
+            android:text="正确率"
+            android:layout_marginLeft="40dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tx_data_posture_accuracy"
+            android:text="8"
+            android:layout_marginRight="40dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:background="@drawable/attention_data_show"
+        android:layout_width="match_parent"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginVertical="5dp"
+        android:layout_height="50dp">
+        <TextView
+            android:text="平均分"
+            android:layout_marginLeft="40dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tx_data_posture_average"
+            android:text="4.3"
+            android:layout_marginRight="40dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:background="@drawable/attention_data_show"
+        android:layout_width="match_parent"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginVertical="5dp"
+        android:layout_height="50dp">
+        <TextView
+            android:text="等级值"
+            android:layout_marginLeft="40dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:id="@+id/grade_star"
+            android:layout_marginRight="40dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/star11"
+                android:layout_marginLeft="2dp"
+                android:background="@drawable/zero_star"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+            <ImageView
+                android:id="@+id/star12"
+                android:layout_marginLeft="2dp"
+                android:background="@drawable/zero_star"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+            <ImageView
+                android:id="@+id/star13"
+                android:layout_marginLeft="2dp"
+                android:background="@drawable/zero_star"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+            <ImageView
+                android:id="@+id/star14"
+                android:layout_marginLeft="2dp"
+                android:background="@drawable/zero_star"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+            <ImageView
+                android:id="@+id/star15"
+                android:layout_marginLeft="2dp"
+                android:background="@drawable/zero_star"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+        </LinearLayout>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp">
+    </LinearLayout>
+</LinearLayout>

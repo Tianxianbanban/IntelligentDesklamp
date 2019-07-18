@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Button按下时的背景 -->
+    <item android:drawable="@drawable/all_pressed" android:state_pressed="true"/>
+    <!--正常-->
+    <item android:drawable="@drawable/all_normal" android:state_pressed="false"/>
+</selector>

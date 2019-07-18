@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/nav_group1"
+        android:checkableBehavior="single">
+        <item
+        android:id="@+id/personfunc_info"
+        android:icon="@drawable/personalinfo"
+        android:title="个人资料" />
+        <item
+        android:id="@+id/personfunc_signin"
+        android:icon="@drawable/signin_p"
+        android:title="签到打卡"/>
+        <item
+            android:id="@+id/personfunc_mylamp"
+            android:icon="@drawable/desklamp"
+            android:title="我的台灯"/>
+        <item
+        android:id="@+id/personfunc_setting"
+        android:icon="@drawable/settings"
+        android:title="设置"/>
+    </group>
+
+    <group
+        android:id="@+id/vav_group2"
+        android:checkableBehavior="single">
+        <item
+        android:id="@+id/personfunc_help"
+        android:icon="@drawable/help"
+        android:title="使用帮助" />
+        <item
+            android:id="@+id/personfunc_aboutourselves"
+            android:icon="@drawable/aboutourselves"
+            android:title="关于我们" />
+        <item
+            android:id="@+id/personfunc_logout"
+            android:icon="@drawable/logout"
+            android:title="退出账户"/>
+    </group>
+
+</menu>
