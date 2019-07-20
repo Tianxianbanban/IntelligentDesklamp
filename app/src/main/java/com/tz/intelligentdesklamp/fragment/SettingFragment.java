@@ -6,7 +6,6 @@ package com.tz.intelligentdesklamp.fragment;
 
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Gravity;
@@ -18,13 +17,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tz.intelligentdesklamp.R;
 import com.tz.intelligentdesklamp.adpter.TodoListAdapter;
 import com.tz.intelligentdesklamp.base.BaseFragment;
-import com.tz.intelligentdesklamp.bean.JsonLogin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +31,7 @@ import java.util.List;
 import static android.content.Context.MODE_PRIVATE;
 
 public class SettingFragment extends BaseFragment{
+    String TAG="SettingFragment";
     private List<String> todoList=new ArrayList<>();//展示待办事项
     ListView lv_efficency_todo;//列表
     Button bt_efficency_addtodo;//添加任务
@@ -44,42 +44,28 @@ public class SettingFragment extends BaseFragment{
         View view = View.inflate(mContext, R.layout.fragment_setting, null);
         lv_efficency_todo=(ListView)view.findViewById(R.id.lv_efficency_todo);
         bt_efficency_addtodo=(Button)view.findViewById(R.id.bt_efficency_addtodo);
-        bt_todo_item_edit=(Button)view.findViewById(R.id.bt_todo_item_edit);
+//        bt_todo_item_edit=(Button)view.findViewById(R.id.bt_todo_item_edit);//去除了编辑
 
         bt_efficency_addtodo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showBottomInput(null);//添加任务
+                showBottomInput(null);//添加任务，弹出输入框
             }
         });
 
-//        bt_todo_item_edit.setOnClickListener(new View.OnClickListener() {//点击编辑
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(getContext(),"编辑",Toast.LENGTH_SHORT);
-//            }
-//        });
 
-        //内容
-//        todoList.add("任务添加在这里");
-//        todoList.add("hhh");
-//        todoList.add("ooo");
-//        todoList.add("ppp");
-
+        //将存储任务取出
         String items =getContext().getSharedPreferences("todoList_data", MODE_PRIVATE)
                 .getString("todoList", "data_null");
         Log.d("items", "initView: "+items);
-//        Gson gson=new Gson();
-//        todoList=gson.fromJson(items,new TypeToken<List<String>>(){}.getType());
-        //取出内容
+        //设置列表内容
+        Gson gson=new Gson();
+        todoList=gson.fromJson(items,new TypeToken<List<String>>(){}.getType());
         if (todoList.size()>0){
             Log.d("itemsToGet", "initView: "+todoList.toString());
         }
-
-//        todoListAdapter=new TodoListAdapter(getContext(),R.layout.item_of_todo,todoList);
         todoListAdapter=new TodoListAdapter(getContext(),todoList);
         lv_efficency_todo.setAdapter(todoListAdapter);
-
         return view;
     }
 
@@ -103,7 +89,7 @@ public class SettingFragment extends BaseFragment{
         et_todo_taskinput.setText(content);
 
         //点击事件
-        tx_todo_cancel.setOnClickListener(new View.OnClickListener() {//取消
+        tx_todo_cancel.setOnClickListener(new View.OnClickListener() {//取消添加
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
@@ -112,22 +98,23 @@ public class SettingFragment extends BaseFragment{
         tx_todo_save.setOnClickListener(new View.OnClickListener() {//保存添加
             @Override
             public void onClick(View view) {
-                String taskWaittoAdd=et_todo_taskinput.getText().toString();
-                if (taskWaittoAdd.equals("")){
+                String taskWaitToAdd=et_todo_taskinput.getText().toString();//等待存储的任务内容
+                if (taskWaitToAdd.equals("")){//如果输入为空直接关闭输入框
                     dialog.dismiss();
+                }else if (taskWaitToAdd.length()>100){
+                    Toast.makeText(mContext,"可以精简任务描述呢~~~",Toast.LENGTH_SHORT).show();
                 }else{
-                    todoList.add(taskWaittoAdd);
+                    //添加并设置适配器
+                    todoList.add(taskWaitToAdd);
                     todoListAdapter=new TodoListAdapter(getContext(),todoList);
                     lv_efficency_todo.setAdapter(todoListAdapter);
-
+                    //将todoList转换成gson进行SP存储
                     Gson gson=new Gson();
                     String itemsToSave=gson.toJson(todoList);
                     SharedPreferences.Editor editor=getContext().getSharedPreferences("todoList_data",MODE_PRIVATE).edit();
-//                    editor.putString("todoList",todoList.toString());
                     editor.putString("todoList",itemsToSave);
-//                    Log.d("todoList.toString()", "onClick: "+todoList.toString());
-                    Log.d("todoList.toString()", "onClick: "+itemsToSave);
                     editor.apply();
+                    Log.d(TAG, "onClick: todoList.toString() 所有任务存储内容："+itemsToSave);
                     dialog.dismiss();
                 }
 
@@ -135,6 +122,5 @@ public class SettingFragment extends BaseFragment{
         });
 
     }
-
 
 }

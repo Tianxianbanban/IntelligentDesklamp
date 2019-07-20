@@ -56,6 +56,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     HttpUtil.showSuccess(Login.this,"登录成功!");
                     Intent intent=new Intent(Login.this,MainActivity.class);
                     startActivity(intent);
+//                    finish();
                     break;
                 case WHAT_ERROR://密码错误
                     HttpUtil.showWrong(Login.this,"密码或账号错误，请确认信息！");

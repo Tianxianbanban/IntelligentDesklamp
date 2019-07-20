@@ -14,12 +14,12 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
-        <Button
-            android:id="@+id/bt_todo_item_edit"
-            android:text="编辑"
-            android:background="@color/colorLightBlue"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+        <!--<Button-->
+            <!--android:id="@+id/bt_todo_item_edit"-->
+            <!--android:text="编辑"-->
+            <!--android:background="@color/colorLightBlue"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent" />-->
         <Button
             android:id="@+id/bt_todo_item_delete"
             android:text="删除"
@@ -48,7 +48,7 @@
     android:layout_marginLeft="20dp"
     android:textSize="30sp"
     android:textColor="@color/colorBlack"
-    android:text="待办"
+    android:text="待办内容"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
     </LinearLayout>
