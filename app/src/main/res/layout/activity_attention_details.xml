@@ -68,17 +68,32 @@
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
-    <RelativeLayout
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_margin="10dp"
         android:layout_height="0dp">
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/linechart_data_attention"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </com.github.mikephil.charting.charts.LineChart>
-    </RelativeLayout>
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/linechart_data_attention"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </com.github.mikephil.charting.charts.LineChart>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/image_attention_nodata"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+    </FrameLayout>
 
     <RelativeLayout
         android:background="@drawable/attention_data_show"

@@ -25,6 +25,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class MyService extends Service {
+    String TAG="MyService";
 
     //待传递数据
     double score;//评分
@@ -70,25 +71,32 @@ public class MyService extends Service {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String responseData=response.body().string();
+                        Log.d(TAG, "onResponse: 服务请求数据"+responseData);
                         //解析
-                        Gson gson=new Gson();
-                        GetBaseData getBaseData=gson.fromJson(responseData,new TypeToken<GetBaseData>(){}.getType());
-                        int code=getBaseData.getCode();
-                        if (code==0){
-                            score=getBaseData.getData().getBaseDataViewObject().getScore();//评分
-                            grade=getBaseData.getData().getBaseDataViewObject().getGrade();//等级
-                            totalTime=getBaseData.getData().getBaseDataViewObject().getTotalTime();//学习时长
-                            accuracy=getBaseData.getData().getBaseDataViewObject().getAccuracy();//坐姿正确率
-                            //关于各种坐姿
-                            a=getBaseData.getData().getBaseDataViewObject().getSittingPostureStatistics().getA();//正确
-                            b=getBaseData.getData().getBaseDataViewObject().getSittingPostureStatistics().getB();//左手错误放置
-                            c=getBaseData.getData().getBaseDataViewObject().getSittingPostureStatistics().getC();//右手错误放置
-                            d=getBaseData.getData().getBaseDataViewObject().getSittingPostureStatistics().getD();//头左偏
-                            e=getBaseData.getData().getBaseDataViewObject().getSittingPostureStatistics().getE();//头右偏
-                            f=getBaseData.getData().getBaseDataViewObject().getSittingPostureStatistics().getF();//身体倾斜
-                            g=getBaseData.getData().getBaseDataViewObject().getSittingPostureStatistics().getG();//趴下
+                        try{
+                            Gson gson=new Gson();
+                            GetBaseData getBaseData=gson.fromJson(responseData,new TypeToken<GetBaseData>(){}.getType());
+                            int code=getBaseData.getCode();
+                            if (code==0){
+                                score=getBaseData.getData().getBaseDataViewObject().getScore();//评分
+                                grade=getBaseData.getData().getBaseDataViewObject().getGrade();//等级
+                                totalTime=getBaseData.getData().getBaseDataViewObject().getTotalTime();//学习时长
+                                accuracy=getBaseData.getData().getBaseDataViewObject().getAccuracy();//坐姿正确率
+                                //关于各种坐姿
+                                a=getBaseData.getData().getBaseDataViewObject().getSittingPostureStatistics().getA();//正确
+                                b=getBaseData.getData().getBaseDataViewObject().getSittingPostureStatistics().getB();//左手错误放置
+                                c=getBaseData.getData().getBaseDataViewObject().getSittingPostureStatistics().getC();//右手错误放置
+                                d=getBaseData.getData().getBaseDataViewObject().getSittingPostureStatistics().getD();//头左偏
+                                e=getBaseData.getData().getBaseDataViewObject().getSittingPostureStatistics().getE();//头右偏
+                                f=getBaseData.getData().getBaseDataViewObject().getSittingPostureStatistics().getF();//身体倾斜
+                                g=getBaseData.getData().getBaseDataViewObject().getSittingPostureStatistics().getG();//趴下
 
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            Log.d(TAG, "onResponse: 服务数据json解析出现异常");
                         }
+                       
                     }
                 });
                 //接收处理数据
@@ -108,7 +116,7 @@ public class MyService extends Service {
                 intentOfStartNowData.putExtra("e",e);
                 intentOfStartNowData.putExtra("f",f);
                 intentOfStartNowData.putExtra("g",g);
-                Log.d("MyService", "run 待传递数据："+score+" "+grade+" "+totalTime+" "+accuracy+" "+a+" "+b+" "+c+" "+d+" "+e+" "+f+" "+g);
+                Log.d(TAG, "run 待传递数据："+score+" "+grade+" "+totalTime+" "+accuracy+" "+a+" "+b+" "+c+" "+d+" "+e+" "+f+" "+g);
                 sendBroadcast(intentOfStartNowData);
             }
         }).start();

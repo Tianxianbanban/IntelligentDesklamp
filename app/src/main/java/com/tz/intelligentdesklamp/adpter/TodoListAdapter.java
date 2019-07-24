@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
@@ -15,6 +17,9 @@ import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.google.gson.Gson;
 import com.tz.intelligentdesklamp.R;
 import com.tz.intelligentdesklamp.activity.TodoItemStart;
+import com.tz.intelligentdesklamp.bean.my_info_tosave.TaskAndTime;
+import com.tz.intelligentdesklamp.util.use.TaskAndTimeUtil;
+
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -24,9 +29,9 @@ public class TodoListAdapter extends BaseSwipeAdapter {
     String TAG="TodoListAdapter";
 
     private Context mContext;
-    List<String> todoListInAdapter;
+    List<TaskAndTime> todoListInAdapter;
 
-    public TodoListAdapter(Context mContext,List<String> list) {
+    public TodoListAdapter(Context mContext,List<TaskAndTime> list) {
         this.mContext = mContext;
         this.todoListInAdapter=list;
     }
@@ -50,9 +55,16 @@ public class TodoListAdapter extends BaseSwipeAdapter {
         swipeLayout.setOnDoubleClickListener(new SwipeLayout.DoubleClickListener() {
             @Override
             public void onDoubleClick(SwipeLayout layout, boolean surface) {
-                Intent intentOfTodoItemStart=new Intent(mContext,TodoItemStart.class);//跳转到番茄计时
-                intentOfTodoItemStart.putExtra("task",todoListInAdapter.get(position));//任务内容传递
-                mContext.startActivity(intentOfTodoItemStart);
+                if (!todoListInAdapter.get(position).isFlag()){
+                    Intent intentOfTodoItemStart=new Intent(mContext,TodoItemStart.class);//跳转到番茄计时
+                    intentOfTodoItemStart.putExtra("task",todoListInAdapter.get(position).getTask());//任务内容传递
+                    intentOfTodoItemStart.putExtra("time",todoListInAdapter.get(position).getTime());//任务时间传递
+                    intentOfTodoItemStart.putExtra("position",position);//position传递
+                    mContext.startActivity(intentOfTodoItemStart);
+                }else{
+                    Toast.makeText(mContext,"真是太棒了，已经完成任务了呢！",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         //单击
@@ -94,13 +106,32 @@ public class TodoListAdapter extends BaseSwipeAdapter {
                 swipeLayout.close();
             }
         });
+
+        //确认完成
+        v.findViewById(R.id.bt_todo_item_confirm_finish).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //使得完成戳可见
+                todoListInAdapter.get(position).setFlag(true);//标记为已经完成
+                TaskAndTimeUtil.putTaskAndTimes(mContext,todoListInAdapter);//存储
+                notifyDataSetChanged();
+            }
+        });
         return v;
     }
 
     @Override
     public void fillValues(int position, View convertView) {
+        ImageView image_itemoftodo_finish=(ImageView)convertView.findViewById(R.id.image_itemoftodo_finish) ;
         TextView t = (TextView)convertView.findViewById(R.id.tx_itemoftodo_content);//任务事项
-        t.setText(todoListInAdapter.get(position));
+        TextView tx_itemoftodo_time=(TextView)convertView.findViewById(R.id.tx_itemoftodo_time);//预估时间
+        t.setText(todoListInAdapter.get(position).getTask());
+        tx_itemoftodo_time.setText(todoListInAdapter.get(position).getTime()+"分钟");
+
+        if (todoListInAdapter.get(position).isFlag()){//如果已经完成
+            image_itemoftodo_finish.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override

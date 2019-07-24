@@ -5,31 +5,42 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_margin="10dp"
         android:background="@drawable/home_show_now_score"
         android:layout_width="match_parent"
         android:layout_height="160dp">
         <TextView
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
             android:text="当前评分"
-            android:textSize="50sp"
+            android:textSize="40sp"
             android:textColor="@color/colorWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <TextView
-            android:layout_gravity="center_horizontal"
-            android:text="--"
-            android:textSize="35sp"
+        <com.hanks.htextview.HTextView
+            android:id="@+id/htx_now_score"
+            android:layout_centerInParent="true"
+            android:text="0"
+            android:layout_centerHorizontal="true"
+            android:textSize="40sp"
             android:textColor="#FFCC00"
-            android:id="@+id/tx_now_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <!--<TextView-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:text="0"-->
+            <!--android:textSize="35sp"-->
+            <!--android:textColor="#FFCC00"-->
+            <!--android:id="@+id/tx_now_score"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
         <LinearLayout
             android:id="@+id/grade_star"
-            android:layout_gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -59,7 +70,14 @@
                 android:layout_width="22dp"
                 android:layout_height="22dp" />
         </LinearLayout>
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/image_little_boy"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="5dp"
+            android:layout_width="115dp"
+            android:layout_height="115dp" />
+    </RelativeLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_marginLeft="10dp"
@@ -157,7 +175,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp" />
         </RelativeLayout>
-        <RelativeLayout
+        <FrameLayout
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_width="match_parent"
@@ -168,7 +186,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 />
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/image_chat_nodata"
+                    android:layout_centerInParent="true"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp" />
+                <TextView
+                    android:id="@+id/tx_chat_nodata"
+                    android:text="暂时没有数据呢~"
+                    android:visibility="invisible"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+        </FrameLayout>
+
 
     </LinearLayout>
 

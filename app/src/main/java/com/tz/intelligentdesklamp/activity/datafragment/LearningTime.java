@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.LineChart;;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -44,6 +46,7 @@ public class LearningTime extends BaseDataActivity implements View.OnClickListen
     private TextView tx_data_learning_date;//日期显示
     //中部
     private LineChart lineChart;//折线图
+    private ImageView image_learning_nodata;
     //底部
     private TextView tx_data_learning_timelength;//总时长
     private TextView tx_data_learning_average;//平均值
@@ -62,6 +65,7 @@ public class LearningTime extends BaseDataActivity implements View.OnClickListen
         tx_data_learning_date=(TextView)findViewById(R.id.tx_data_learning_date);
 //        linechart_data_learning=(LineChart)findViewById(R.id.linechart_data_learning);//折线图
         lineChart=(LineChart)findViewById(R.id.linechart_data_learning);//折线图
+        image_learning_nodata=(ImageView)findViewById(R.id.image_learning_nodata);
         tx_data_learning_timelength=(TextView)findViewById(R.id.tx_data_learning_timelength);//学习时长
         tx_data_learning_average=(TextView)findViewById(R.id.tx_data_learning_average);//平均值
         star1=(ImageView)findViewById(R.id.star1);
@@ -150,25 +154,43 @@ public class LearningTime extends BaseDataActivity implements View.OnClickListen
                 String responseData=response.body().string();
                 Log.d(TAG, "onResponse: "+responseData);
                 if (response.code()==200){//如果正常返回开始解析
-                    Gson gson=new Gson();
-                    GetStudyTimeData getStudyTimeData=gson.fromJson(responseData, new TypeToken<GetStudyTimeData>(){}.getType());
-                    if (getStudyTimeData.getCode()==0){
-                        final List<Float> times=getStudyTimeData.getData().getStudyTimeData().getTime();
-                        final Float totalTime=getStudyTimeData.getData().getStudyTimeData().getTotalTime();
-                        final Float average=getStudyTimeData.getData().getStudyTimeData().getAverage();
-                        final int grade=getStudyTimeData.getData().getStudyTimeData().getGrade();
-                        Log.d(TAG, "onResponse: GetStudyTimeData-----"+" times.size():"+times.size()+" totalTime:"+totalTime+" average:"+average+" grade:"+grade);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                showAlone(times);//折线图
-                                tx_data_learning_timelength.setText(String.valueOf(totalTime));//总时长
-                                tx_data_learning_average.setText(String.valueOf(average));//平均值
-                                Utils.setGradeShow(grade,star1,star2,star3,star4,star5);//等级设置
+                    try{
+                        Gson gson=new Gson();
+                        GetStudyTimeData getStudyTimeData=gson.fromJson(responseData, new TypeToken<GetStudyTimeData>(){}.getType());
+                        if (getStudyTimeData.getCode()==0){
+                            final List<Float> times=getStudyTimeData.getData().getStudyTimeData().getTime();
+                            final Float totalTime=getStudyTimeData.getData().getStudyTimeData().getTotalTime();
+                            final Float average=getStudyTimeData.getData().getStudyTimeData().getAverage();
+                            final int grade=getStudyTimeData.getData().getStudyTimeData().getGrade();
+                            Log.d(TAG, "onResponse: GetStudyTimeData-----"+" times.size():"+times.size()+" totalTime:"+totalTime+" average:"+average+" grade:"+grade);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    boolean is=false;
+                                    for (Float data:times) {
+                                        if (data>0){
+                                            is=true;
+                                        }
+                                    }
+                                    if (is){
+                                        lineChart.setVisibility(View.VISIBLE);
+                                        showAlone(times);//折线图
+                                    }else{
+                                        lineChart.setVisibility(View.GONE);
+                                        Glide.with(LearningTime.this).load(R.drawable.nodata).into(image_learning_nodata);
+                                    }
 
-                            }
-                        });
+                                    tx_data_learning_timelength.setText(String.valueOf(totalTime));//总时长
+                                    tx_data_learning_average.setText(String.valueOf(average));//平均值
+                                    Utils.setGradeShow(grade,star1,star2,star3,star4,star5);//等级设置
+
+                                }
+                            });
+                        }
+                    }catch (Exception e){
+
                     }
+
                 }else{
                     showServiceInfo(getContext(),"服务器故障");
                 }

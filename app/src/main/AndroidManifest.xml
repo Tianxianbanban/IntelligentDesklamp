@@ -8,9 +8,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- 关于本地图库 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
+    <!--点亮屏幕-->
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <!--android:name="org.litepal.LitePalApplication"-->
     <application
-        android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -22,7 +23,8 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/app_name" >
         </activity>
-        <activity android:name=".activity.Login">
+        <activity
+            android:name=".activity.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

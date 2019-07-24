@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--HTextView需要在根节点中添加命名空间
+xmlns:htext="http://schemas.android.com/apk/res-auto"-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,22 +9,38 @@
     android:layout_height="match_parent"
     tools:context=".fragment.home.DataFragment">
 
-    <LinearLayout
+    <FrameLayout
         android:orientation="vertical"
         android:layout_margin="10dp"
-        android:background="@drawable/home_show_now_score"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5">
-        <TextView
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:text="你的坐姿习惯"
-            android:textSize="30sp"
-            android:textColor="@color/colorBlack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/image_posture_data_back_flower"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!--<TextView-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:text="你的坐姿习惯"-->
+                <!--android:textSize="30sp"-->
+                <!--android:textColor="@color/colorBlack"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
+            <com.hanks.htextview.HTextView
+                android:id="@+id/htx"
+                android:layout_centerHorizontal="true"
+                android:textSize="30sp"
+                android:textColor="@color/colorBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </FrameLayout>
+
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.LineChart;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -44,6 +46,7 @@ public class AttentionDetails extends BaseDataActivity implements View.OnClickLi
     private TextView tx_data_attention_average;
     private TextView tx_data_attention_variance;
     private ImageView star31,star32,star33,star34,star35;
+    private ImageView image_attention_nodata;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,7 @@ public class AttentionDetails extends BaseDataActivity implements View.OnClickLi
         star33=(ImageView)findViewById(R.id.star13);
         star34=(ImageView)findViewById(R.id.star14);
         star35=(ImageView)findViewById(R.id.star15);
+        image_attention_nodata=(ImageView)findViewById(R.id.image_attention_nodata);
 
         tx_data_attention_date.setText(getDate());
         attentionInitdata(InfoSave.getGetFocusDataUrl(),getContext(),getDate());
@@ -129,7 +133,20 @@ public class AttentionDetails extends BaseDataActivity implements View.OnClickLi
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                showAlone(focusDatas);//折线图
+                                boolean is=false;
+                                for (Float data:focusDatas) {
+                                    if (data>0){
+                                        is=true;
+                                    }
+                                }
+                                if (is){
+                                    linechart_data_attention.setVisibility(View.VISIBLE);
+                                    showAlone(focusDatas);//折线图
+                                }else{
+                                    linechart_data_attention.setVisibility(View.GONE);
+                                    Glide.with(AttentionDetails.this).load(R.drawable.nodata).into(image_attention_nodata);
+                                }
+
                                 tx_data_attention_variance.setText(String.valueOf(variance));//方差
                                 tx_data_attention_average.setText(String.valueOf(average));//平均值
                                 Utils.setGradeShow(grade,star31,star32,star33,star34,star35);//等级设置

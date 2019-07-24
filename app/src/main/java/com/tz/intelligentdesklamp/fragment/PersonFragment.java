@@ -236,24 +236,30 @@ public class PersonFragment extends BaseFragment {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String responseData=response.body().string();
-                        //解析
-                        Gson gson=new Gson();
-                        JsonQueryBackgrounds jsonQueryBackgrounds=gson.fromJson(responseData,
-                                new TypeToken<JsonQueryBackgrounds>(){}.getType());
-                        if (jsonQueryBackgrounds.getCode()==0){//得到正常返回数据
-                            //将list部分倒退为json数据
-                            String pictureListJson = gson.toJson(jsonQueryBackgrounds.getData().getBackgrounds());
-                            //将这段数据存储，将系统图片的url保存，之后使用
-                            SharedPreferences.Editor pictureEditor=getContext().getSharedPreferences("picture_data",MODE_PRIVATE).edit();
-                            pictureEditor.putString("pictureList",pictureListJson);
-                            pictureEditor.apply();
-                            //跳转，展示图片
-                            Intent pictureShowIntent=new Intent(getContext(),PictureShow.class);
-                            startActivity(pictureShowIntent);
-                            handler.sendEmptyMessage(SHOW_SUCCESS);//跳转活动
-                        }else{
-                            handler.sendEmptyMessage(SHOW_UNKOWN);//服务器故障
+                        try{
+                            //解析
+                            Gson gson=new Gson();
+                            JsonQueryBackgrounds jsonQueryBackgrounds=gson.fromJson(responseData,
+                                    new TypeToken<JsonQueryBackgrounds>(){}.getType());
+                            if (jsonQueryBackgrounds.getCode()==0){//得到正常返回数据
+                                //将list部分倒退为json数据
+                                String pictureListJson = gson.toJson(jsonQueryBackgrounds.getData().getBackgrounds());
+                                //将这段数据存储，将系统图片的url保存，之后使用
+                                SharedPreferences.Editor pictureEditor=getContext().getSharedPreferences("picture_data",MODE_PRIVATE).edit();
+                                pictureEditor.putString("pictureList",pictureListJson);
+                                pictureEditor.apply();
+                                //跳转，展示图片
+                                Intent pictureShowIntent=new Intent(getContext(),PictureShow.class);
+                                startActivity(pictureShowIntent);
+                                handler.sendEmptyMessage(SHOW_SUCCESS);//跳转活动
+                            }else{
+                                handler.sendEmptyMessage(SHOW_UNKOWN);//服务器故障
+                            }
+
+                        }catch (Exception e){
+
                         }
+
                     }
                 });
             }

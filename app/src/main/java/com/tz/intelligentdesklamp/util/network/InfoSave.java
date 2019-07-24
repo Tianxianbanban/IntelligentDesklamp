@@ -37,6 +37,11 @@ public class InfoSave {
     //获取得分数据
     static String getMarkDataUrl=new String("http://134.175.68.103:9095/getMarkData");
 
+    //番茄钟开始
+    static String beginUrl=new String("http://134.175.68.103:9095/begin");
+    //番茄钟结束
+    static String endUrl=new String("http://134.175.68.103:9095/end");
+
 
     public static String getUpBackUrl() {
         return upBackUrl;
@@ -68,17 +73,28 @@ public class InfoSave {
     public static String getAlterheadPortraitUrl() {
         return alterheadPortraitUrl;
     }
+
     public static String getGetFocusDataUrl() {
         return getFocusDataUrl;
     }
+
     public static String getGetSittingPostureDataUrl() {
         return getSittingPostureDataUrl;
     }
+
     public static String getGetMarkDataUrl() {
         return getMarkDataUrl;
     }
+
     public static String getGetStudyTimeDataUrl() {
         return getStudyTimeDataUrl;
     }
 
+    public static String getBeginUrl() {
+        return beginUrl;
+    }
+
+    public static String getEndUrl() {
+        return endUrl;
+    }
 }

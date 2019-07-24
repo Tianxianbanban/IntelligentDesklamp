@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieEntry;
 import com.google.gson.Gson;
@@ -38,7 +39,7 @@ import okhttp3.Response;
 public class DataPosture extends BaseDataActivity implements View.OnClickListener {
     String TAG="DataPosture";
 
-    private TextView tx_data_posture_back;//返回
+    private ImageView image_data_posture_back;//返回
     private Button bt_data_posture_date_cut;//日期后退
     private Button bt_data_posture_date_add;//日期前进
     private TextView tx_data_posture_date;//显示日期
@@ -46,6 +47,7 @@ public class DataPosture extends BaseDataActivity implements View.OnClickListene
     private TextView tx_data_posture_accuracy;//正确率
     private TextView tx_data_posture_average;//平均分
     private ImageView star11,star12,star13,star14,star15;
+    ImageView image_posture_nodata;
 
 
     @Override
@@ -53,7 +55,7 @@ public class DataPosture extends BaseDataActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_posture);
 
-        tx_data_posture_back=(TextView)findViewById(R.id.tx_data_posture_back);//返回
+        image_data_posture_back=(ImageView) findViewById(R.id.image_data_posture_back);//返回
         bt_data_posture_date_cut=(Button) findViewById(R.id.bt_data_posture_date_cut);//日期加减
         bt_data_posture_date_add=(Button) findViewById(R.id.bt_data_posture_date_add);
         tx_data_posture_date=(TextView) findViewById(R.id.tx_data_posture_date);//日期显示
@@ -65,6 +67,8 @@ public class DataPosture extends BaseDataActivity implements View.OnClickListene
         star13=(ImageView)findViewById(R.id.star13);
         star14=(ImageView)findViewById(R.id.star14);
         star15=(ImageView)findViewById(R.id.star15);
+        image_posture_nodata=(ImageView)findViewById(R.id.image_posture_nodata);
+
         /**
          * 界面内容初始布置
          */
@@ -76,7 +80,7 @@ public class DataPosture extends BaseDataActivity implements View.OnClickListene
          * 再布置内容
          */
         //日期加减按钮点击事件
-        tx_data_posture_back.setOnClickListener(this);
+        image_data_posture_back.setOnClickListener(this);
         bt_data_posture_date_cut.setOnClickListener(this);
         bt_data_posture_date_add.setOnClickListener(this);
     }
@@ -85,7 +89,7 @@ public class DataPosture extends BaseDataActivity implements View.OnClickListene
     public void onClick(View view) {//手动调整日期，点击发送网络请求
         String requestDateText=null;
         switch (view.getId()){
-            case R.id.tx_data_posture_back:
+            case R.id.image_data_posture_back:
                 finish();
                 break;
             case R.id.bt_data_posture_date_cut://日期减
@@ -154,7 +158,13 @@ public class DataPosture extends BaseDataActivity implements View.OnClickListene
                                 //正确率与平均分的内容设置
                                 tx_data_posture_accuracy.setText(String.valueOf(accuracy));
                                 tx_data_posture_average.setText(String.valueOf(average));
-                                showRingPieChart(a,b,c,d,e,f,g);
+                                if (a<=0&&b<=0&&c<=0&&d<=0&&e<=0&&f<=0&&g<=0){
+                                    pie_chat_data_posture.setVisibility(View.GONE);
+                                    Glide.with(DataPosture.this).load(R.drawable.nodata).into(image_posture_nodata);
+                                }else{
+                                    pie_chat_data_posture.setVisibility(View.VISIBLE);
+                                    showRingPieChart(a,b,c,d,e,f,g);
+                                }
                                 Utils.setGradeShow(grade,star11,star12,star13,star14,star15);
 //                                showRingPieChart(1,4,7,22,7,9,9);
                             }

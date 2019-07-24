@@ -4,13 +4,15 @@ package com.tz.intelligentdesklamp.fragment.home;
  * 显示统计数据
  */
 
-import android.app.ActivityOptions;
 import android.content.Intent;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.hanks.htextview.HTextView;
+import com.hanks.htextview.HTextViewType;
 import com.tz.intelligentdesklamp.R;
 import com.tz.intelligentdesklamp.activity.datafragment.AttentionDetails;
 import com.tz.intelligentdesklamp.activity.datafragment.DataPosture;
@@ -20,7 +22,7 @@ import com.tz.intelligentdesklamp.base.BaseFragment;
 
 
 public class DataFragment extends BaseFragment implements View.OnClickListener{
-
+    ImageView image_posture_data_back_flower;
 
 
     @Override
@@ -33,6 +35,15 @@ public class DataFragment extends BaseFragment implements View.OnClickListener{
         final RelativeLayout attention_details=view.findViewById(R.id.attention_details);
         final RelativeLayout daily_data=view.findViewById(R.id.daily_data);//查看日报，为链接
 
+        image_posture_data_back_flower=(ImageView)view.findViewById(R.id.image_posture_data_back_flower);//背景框框
+        Glide.with(this).load(R.drawable.back_flower).into(image_posture_data_back_flower);
+
+        HTextView htx=view.findViewById(R.id.htx);
+        htx.setAnimateType(HTextViewType.EVAPORATE);
+//        htx.setAnimateType(HTextViewType.SCALE);
+        htx.animateText("坐姿习惯");
+
+
         posture_data.setOnClickListener(this);
         score_data.setOnClickListener(this);
         learning_time.setOnClickListener(this);
@@ -41,6 +52,8 @@ public class DataFragment extends BaseFragment implements View.OnClickListener{
 
         return view;
     }
+
+
 
     @Override
     public void onClick(View view) {//点击选项时候把日期数据传递过去

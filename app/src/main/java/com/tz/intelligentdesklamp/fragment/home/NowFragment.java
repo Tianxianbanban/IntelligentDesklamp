@@ -24,8 +24,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieEntry;
+import com.hanks.htextview.HTextView;
+import com.hanks.htextview.HTextViewType;
 import com.tz.intelligentdesklamp.R;
 import com.tz.intelligentdesklamp.base.BaseFragment;
 import com.tz.intelligentdesklamp.service.MyService;
@@ -57,7 +61,8 @@ public class NowFragment extends BaseFragment implements View.OnClickListener{
     int f;//身体倾斜
     int g;//趴下
 
-    private TextView tx_now_score;//评分
+    private HTextView htx_now_score;//评分
+    private ImageView image_little_boy;//小男孩
     private ImageView grade_star_1,grade_star_2,grade_star_3,grade_star_4,grade_star_5;//等级显示星标
     private LinearLayout time;//工作时长
     private TextView tx_now_time;
@@ -66,6 +71,8 @@ public class NowFragment extends BaseFragment implements View.OnClickListener{
     private RelativeLayout details;//坐姿详情
 
     private PieChart pie_chat_now;
+    private ImageView image_chat_nodata;//无数据时显示
+    private TextView tx_chat_nodata;//无数据时显示
 
     @Override
     protected View initView() {
@@ -78,7 +85,9 @@ public class NowFragment extends BaseFragment implements View.OnClickListener{
         nowDataChangedReceiver =new NowDataChangedReceiver();
         getContext().registerReceiver(nowDataChangedReceiver,intentFilter);//进行注册，要记得取消注册
 
-        tx_now_score=(TextView)view.findViewById(R.id.tx_now_score);//评分
+        image_little_boy=(ImageView)view.findViewById(R.id.image_little_boy);//小男孩
+        Glide.with(this).load(R.drawable.little_boy).override(100,100).into(image_little_boy);
+        htx_now_score=(HTextView) view.findViewById(R.id.htx_now_score);//评分!!!!
         grade_star_1=(ImageView)view.findViewById(R.id.grade_star_1);//关于等级的星标
         grade_star_2=(ImageView)view.findViewById(R.id.grade_star_2);
         grade_star_3=(ImageView)view.findViewById(R.id.grade_star_3);
@@ -91,6 +100,8 @@ public class NowFragment extends BaseFragment implements View.OnClickListener{
         details=(RelativeLayout)view.findViewById(R.id.details);//详情
 
         pie_chat_now=(PieChart) view.findViewById(R.id.pie_chat_now);//饼状图
+        image_chat_nodata=(ImageView)view.findViewById(R.id.image_chat_nodata);//暂无数据
+        tx_chat_nodata=(TextView)view.findViewById(R.id.tx_chat_nodata);
 
         time.setOnClickListener(this);
         posture.setOnClickListener(this);
@@ -101,6 +112,7 @@ public class NowFragment extends BaseFragment implements View.OnClickListener{
         Intent intentOfInfo=new Intent(getContext(),MyService.class);
         getContext().startService(intentOfInfo);
 
+
         SharedPreferences sharedPreferences=getContext().getSharedPreferences("now_data",MODE_PRIVATE);
         int a=sharedPreferences.getInt("a",0);
         int b=sharedPreferences.getInt("b",0);
@@ -109,7 +121,12 @@ public class NowFragment extends BaseFragment implements View.OnClickListener{
         int e=sharedPreferences.getInt("e",0);
         int f=sharedPreferences.getInt("f",0);
         int g=sharedPreferences.getInt("g",0);
-//        showRingPieChart(a,b,c,d,e,f,g);
+        if (a==0&&b==0&&c==0&&d==0&&e==0&&f==0&&g==0){
+            image_chat_nodata.setVisibility(View.VISIBLE);
+            pie_chat_now.setVisibility(View.GONE);
+        }else{
+            showRingPieChart(a,b,c,d,e,f,g);//饼状图展示
+        }
         return view;
     }
 
@@ -184,15 +201,36 @@ public class NowFragment extends BaseFragment implements View.OnClickListener{
             Log.d("Now_data:", "onReceive: score"+score+" grade"+grade+" totalTime"+totalTime+
                     " accuracy"+accuracy+" a"+a+" b"+b+" c"+c+" d"+d+" e"+e+" f"+f+" g"+g+" ");
 
-            //数据简单处理
+            //简单数据处理
+
+            if (Float.parseFloat(score)<0){
+                score="0";
+            }else if (Float.parseFloat(score)>100){
+                score="100";
+            }else if (score.length()>4){
+
+            }
             DecimalFormat decimalFormat=new DecimalFormat("0.00%");//将正确率换成百分数
             String accuracyb=decimalFormat.format(Double.valueOf(accuracy));
             //UI变化
-            tx_now_score.setText(score);//分数
+//            htx_now_score.setText(score);//分数
+            htx_now_score.setAnimateType(HTextViewType.LINE);
+            htx_now_score.animateText(score);
+
             Utils.setGradeShow(grade,grade_star_1,grade_star_2,grade_star_3,grade_star_4,grade_star_5);//等级展示
             tx_now_time.setText(String.valueOf(totalTime));//学习时长
             tx_now_posture.setText(accuracyb);//坐姿正确率
-            showRingPieChart(a,b,c,d,e,f,g);//饼状图展示
+
+            if (a==0&&b==0&&c==0&&d==0&&e==0&&f==0&&g==0){
+                pie_chat_now.setVisibility(View.GONE);
+                Glide.with(getContext()).load(R.drawable.nodata).into(image_chat_nodata);
+                tx_chat_nodata.setVisibility(View.VISIBLE);
+//                image_chat_nodata.setVisibility(View.VISIBLE);
+            }else{
+                showRingPieChart(a,b,c,d,e,f,g);//饼状图展示
+                pie_chat_now.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 

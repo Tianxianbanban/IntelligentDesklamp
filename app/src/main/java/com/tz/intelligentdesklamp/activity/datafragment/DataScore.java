@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.BarChart;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -41,6 +43,7 @@ public class DataScore extends BaseDataActivity implements View.OnClickListener{
     private Button bt_data_score_date_cut;
     private Button bt_data_score_date_add;
     private TextView tx_data_score_date;
+    private ImageView image_score_nodata;
     //中部
     BarChart barchart_data_score;//柱状图
     //底部
@@ -59,6 +62,7 @@ public class DataScore extends BaseDataActivity implements View.OnClickListener{
         bt_data_score_date_add=(Button)findViewById(R.id.bt_data_score_date_add);
         tx_data_score_date=(TextView)findViewById(R.id.tx_data_score_date);
         barchart_data_score=(BarChart)findViewById(R.id.barchart_data_score);//柱状图
+        image_score_nodata=(ImageView)findViewById(R.id.image_score_nodata);//
         tx_data_score_average=(TextView)findViewById(R.id.tx_data_score_average);//期望
         tx_data_score_variance=(TextView)findViewById(R.id.tx_data_score_variance);//方差
         star21=(ImageView)findViewById(R.id.star1);//等级
@@ -111,7 +115,20 @@ public class DataScore extends BaseDataActivity implements View.OnClickListener{
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                showBarChart(scores);//折线图
+                                boolean is=false;
+                                for (Float data:scores) {
+                                    if (data>0){
+                                        is=true;
+                                    }
+                                }
+                                if (is){
+                                    barchart_data_score.setVisibility(View.VISIBLE);
+                                    showBarChart(scores);//折线图
+                                }else {
+                                    barchart_data_score.setVisibility(View.GONE);
+                                    Glide.with(DataScore.this).load(R.drawable.nodata).into(image_score_nodata);
+                                }
+
                                 tx_data_score_average.setText(String.valueOf(average));//总时长
                                 tx_data_score_variance.setText(String.valueOf(variance));//平均值
                                 Utils.setGradeShow(grade,star21,star22,star23,star24,star25);//等级设置

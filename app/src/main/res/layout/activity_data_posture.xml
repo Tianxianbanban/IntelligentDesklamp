@@ -9,6 +9,8 @@
     tools:context=".activity.datafragment.AttentionDetails">
     <android.support.v7.widget.Toolbar
         android:background="@color/colorLightBlue"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
@@ -22,63 +24,84 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize">
-                <TextView
-                    android:id="@+id/tx_data_posture_back"
-                    android:text="返回"
+                <ImageView
+                    android:id="@+id/image_data_posture_back"
+                    android:background="@drawable/back_all"
+                    android:layout_marginLeft="20dp"
                     android:textSize="20sp"
-                    android:clickable="true"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <LinearLayout
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center_horizontal"
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <Button
-                        android:id="@+id/bt_data_posture_date_cut"
-                        android:background="@drawable/left"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp" />
-                    <TextView
-                        android:id="@+id/tx_data_posture_date"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="2dp"
-                        android:text="2019-01-24"
-                        android:textSize="15sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <Button
-                        android:id="@+id/bt_data_posture_date_add"
-                        android:background="@drawable/right"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp" />
-                </LinearLayout>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
                 <TextView
                     android:text="坐姿数据"
-                    android:textSize="15sp"
+                    android:textSize="20sp"
                     android:layout_marginRight="10dp"
-                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
                     android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:layout_centerInParent="true"
+        android:layout_margin="10dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/bt_data_posture_date_cut"
+            android:background="@drawable/left"
+            android:layout_marginRight="5dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+        <TextView
+            android:id="@+id/tx_data_posture_date"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:text="2019-01-24"
+            android:textSize="20sp"
+            android:textColor="@color/colorBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/bt_data_posture_date_add"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/right"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+    </LinearLayout>
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_margin="10dp"
         android:layout_height="0dp">
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pie_chat_data_posture"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-    </RelativeLayout>
+            android:layout_height="match_parent">
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pie_chat_data_posture"
+                android:layout_centerInParent="true"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/image_posture_nodata"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </RelativeLayout>
+
+    </FrameLayout>
+
 
     <RelativeLayout
         android:background="@drawable/attention_data_show"

@@ -37,13 +37,20 @@
                 android:layout_marginTop="30dp"
                 android:id="@+id/et_todo_taskinput"
                 android:hint="任务添加…"
+                android:maxLines="2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
+            <EditText
+                android:id="@+id/et_todo_timeinput"
+                android:hint="填写预估时间(分钟)…"
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"></LinearLayout>
+            android:layout_height="170dp">
+        </LinearLayout>
     </LinearLayout>
 
 
