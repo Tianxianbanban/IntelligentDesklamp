@@ -1,12 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <TextView
-        android:text="计划"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    android:orientation="vertical"
+    android:background="#dddddd">
+
+    <LinearLayout
+        android:id="@+id/ll_reset"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/tv_show_mode_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="text"
+            android:textSize="23sp"/>
+
+    </LinearLayout>
+
+
+    <include layout="@layout/music_front" />
+
+    <FrameLayout
+        android:id="@+id/fl_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/mode_back" />
+
+        <include layout="@layout/mode_front"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_brightness"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/brightness_back" />
+
+        <include layout="@layout/brightness_front"/>
+
+    </FrameLayout>
 
 </LinearLayout>

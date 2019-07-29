@@ -10,6 +10,14 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!--点亮屏幕-->
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
+    <!--台灯控制部分，语音相关-->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+
+
     <!--android:name="org.litepal.LitePalApplication"-->
     <application
         android:allowBackup="true"

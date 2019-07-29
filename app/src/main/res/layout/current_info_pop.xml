@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/current_info_bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_current_info_brightness"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:background="@drawable/btn_circle"
+            android:gravity="center"
+            android:text="亮度: --"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_margin="20dp" />
+
+        <TextView
+            android:id="@+id/tv_current_info_noise"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:background="@drawable/btn_circle"
+            android:gravity="center"
+            android:text="噪音: --"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_margin="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@id/tv_current_info_brightness"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_current_info_temperature"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:background="@drawable/btn_circle"
+            android:gravity="center"
+            android:text="温度: --"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_margin="20dp" />
+
+        <TextView
+            android:id="@+id/tv_current_info_humidity"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:background="@drawable/btn_circle"
+            android:gravity="center"
+            android:text="湿度: --"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_margin="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@id/tv_current_info_temperature"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@drawable/current_info_paopao"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="你的小可爱正在为你播报"
+            android:textSize="18sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="最新环境状况~~~"
+            android:textSize="18sp"
+            android:layout_marginBottom="15dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

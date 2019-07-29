@@ -17,4 +17,15 @@
         <item name="contentInsetStart">0dp</item>
     </style>
 
+    <style name="pop_anim_music" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@animator/pop_music_enter_anim</item>
+        <item name="android:windowExitAnimation">@animator/pop_music_exit_anim</item>
+    </style>
+
+    <style name="pop_anim_current_info" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@animator/pop_current_info_enter</item>
+        <item name="android:windowExitAnimation">@animator/pop_current_info_exit</item>
+    </style>
+
+
 </resources>
