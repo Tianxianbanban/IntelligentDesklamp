@@ -4,9 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/lv_todo_item_swipe"
     android:layout_width="match_parent"
-    android:minHeight="170dp"
-    android:maxHeight="170dp"
-    android:layout_height="170dp"
+    android:minHeight="130dp"
+    android:maxHeight="130dp"
+    android:layout_height="130dp"
     swipe:leftEdgeSwipeOffset="0dp"
     swipe:rightEdgeSwipeOffset="0dp">
 
@@ -24,11 +24,15 @@
             android:id="@+id/bt_todo_item_confirm_finish"
             android:text="完成"
             android:background="@color/colorLightBlue"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
         <Button
             android:id="@+id/bt_todo_item_delete"
             android:text="删除"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:background="@color/colorRed"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />

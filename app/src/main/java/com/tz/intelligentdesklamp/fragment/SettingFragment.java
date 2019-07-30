@@ -146,11 +146,16 @@ public class SettingFragment extends BaseFragment{
         String items =getContext().getSharedPreferences("todoList_data", MODE_PRIVATE).getString("todoList", "data_null");
         Log.d(TAG, "initView: "+items);
 
-        Gson gson=new Gson();
-        taskAndTimes=gson.fromJson(items,new TypeToken<List<TaskAndTime>>(){}.getType());
-        todoListAdapter=new TodoListAdapter(getContext(),taskAndTimes);
-        todoListAdapter.notifyDataSetChanged();
-        lv_efficency_todo.setAdapter(todoListAdapter);
+        try{
+            Gson gson=new Gson();
+            taskAndTimes=gson.fromJson(items,new TypeToken<List<TaskAndTime>>(){}.getType());
+            todoListAdapter=new TodoListAdapter(getContext(),taskAndTimes);
+            todoListAdapter.notifyDataSetChanged();
+            lv_efficency_todo.setAdapter(todoListAdapter);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
     }
 

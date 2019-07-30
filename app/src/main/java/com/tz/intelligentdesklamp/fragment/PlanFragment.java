@@ -1,6 +1,6 @@
 package com.tz.intelligentdesklamp.fragment;
 /**
- * 计划
+ * 关于台灯控制部分
  */
 
 import android.Manifest;
@@ -9,12 +9,10 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
@@ -23,7 +21,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -34,21 +31,21 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.tts.auth.AuthInfo;
 import com.baidu.tts.chainofresponsibility.logger.LoggerProxy;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.baidu.tts.client.TtsMode;
+import com.bumptech.glide.Glide;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.tz.intelligentdesklamp.MainActivity;
 import com.tz.intelligentdesklamp.R;
 import com.tz.intelligentdesklamp.adpter.MusicAdapter;
 import com.tz.intelligentdesklamp.base.BaseFragment;
@@ -63,14 +60,11 @@ import com.tz.intelligentdesklamp.util.AutoCheck;
 import com.tz.intelligentdesklamp.util.OfflineResource;
 import com.tz.intelligentdesklamp.util.network.HttpUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.security.auth.login.LoginException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -79,6 +73,17 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class PlanFragment extends BaseFragment implements View.OnClickListener {
+
+    /**
+     *  以下小段部分为合并后的添加或者修改
+     *
+     *  和：
+     *  音乐列表具体信息设置为不可见
+     */
+    String[] modelNow={"自动模式","阳光模式","海潮模式","泡泡模式"};
+    int[] flags={0,1,2};//用于标记卡片翻转
+
+
 
     private static String url_switch = "http://134.175.68.103:9095/switch";
     private static String url_getCurrentInfo = "http://134.175.68.103:9095/getCurrentInfo";
@@ -102,6 +107,9 @@ public class PlanFragment extends BaseFragment implements View.OnClickListener {
     private GestureDetector detector;
     private PopupWindow currentInfoPopWindow; //下拉是实现当前信息的PopupWindow
 
+    //背景图云
+    private ImageView image_show_cloud;
+
     //currentInfoPopWindow中的4个泡泡
     private TextView tv_current_info_brightness;
     private TextView tv_current_info_noise;
@@ -117,7 +125,7 @@ public class PlanFragment extends BaseFragment implements View.OnClickListener {
     AnimatorSet brightnessRightOutSet;
     AnimatorSet brightnessLeftInSet;
 
-    private LinearLayout ll_reset; //在音乐模块的上面，用于翻转正面
+    private FrameLayout ll_reset; //在音乐模块的上面，用于翻转正面
     private TextView tv_show_mode_status;
 
 
@@ -213,7 +221,7 @@ public class PlanFragment extends BaseFragment implements View.OnClickListener {
         ll_reset.setOnClickListener(this);
 
         tv_show_mode_status = view.findViewById(R.id.tv_show_mode_status);
-        String s = "当前为自动模式\n"+"你的小可爱\n"+"正在为你提供\n"+"无语伦比的\n"+"精神抖擞的\n"+"最自然的光线~\n";
+        String s = "当前为"+modelNow[0]+"\n"+"你的小可爱\n"+"正在为你提供\n"+"无语伦比的\n"+"精神抖擞的\n"+"最自然的光线~\n";
         tv_show_mode_status.setText(s);
 
         //new一个手势检测器
@@ -284,12 +292,17 @@ public class PlanFragment extends BaseFragment implements View.OnClickListener {
         getMusicList();
         mediaPlayer = new MediaPlayer();
         ll_music_front = view.findViewById(R.id.ll_music_front);
-        ll_music_front.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showMusicPopWindowPopupWindow();
-            }
-        });
+        ll_music_front.setOnClickListener(this);
+//        ll_music_front.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showMusicPopWindowPopupWindow();
+//            }
+//        });
+
+        //云
+        image_show_cloud=view.findViewById(R.id.image_show_cloud);
+        Glide.with(getContext()).load(R.drawable.cloud).into(image_show_cloud);
 
         // ========= 模式 =========
         fl_mode = view.findViewById(R.id.fl_mode);
@@ -441,6 +454,33 @@ public class PlanFragment extends BaseFragment implements View.OnClickListener {
             brightnessIsShowBack = true;
             ll_brightness_front.setEnabled(false);
             ll_brightness_front.setClickable(false);
+        }
+    }
+
+    /**
+     * 当点击一个选项卡时，其他的选项卡需要显示正面
+     */
+
+    // 亮度 处翻转卡片
+    public void flipCard(View view,int flag) {
+        //flag值 1-模式 2-光线
+
+        if (flag==1&&modeIsShowBack) {//载入模式正面
+            modeRightOutSet.setTarget(ll_mode_back);
+            modeLeftInSet.setTarget(ll_mode_front);
+            modeRightOutSet.start();
+            modeLeftInSet.start();
+            modeIsShowBack = false;
+            ll_mode_front.setEnabled(true);
+            ll_mode_front.setClickable(true);
+        }else if (flag==2&&brightnessIsShowBack) {//载入光线正面
+            brightnessRightOutSet.setTarget(ll_brightness_back);
+            brightnessLeftInSet.setTarget(ll_brightness_front);
+            brightnessRightOutSet.start();
+            brightnessLeftInSet.start();
+            brightnessIsShowBack = false;
+            ll_brightness_front.setEnabled(true);
+            ll_brightness_front.setClickable(true);
         }
     }
 
@@ -723,9 +763,15 @@ public class PlanFragment extends BaseFragment implements View.OnClickListener {
                     brightnessFlipCard(v);
                 }
                 break;
-            case R.id.ll_mode_front:
+            case R.id.ll_music_front://音乐
+                showMusicPopWindowPopupWindow();
+//                flipCard(v,1);
+//                flipCard(v,2);
+                break;
+            case R.id.ll_mode_front://模式正面
                 Log.e("TAG", "ll_mode_front");
                 modeFlipCard(v);
+                flipCard(v,2);//将光线选项卡返回正面
                 break;
             case R.id.bt_mode_auto:
                 //Toast.makeText(getContext(), "auto mode", Toast.LENGTH_SHORT).show();
@@ -750,6 +796,7 @@ public class PlanFragment extends BaseFragment implements View.OnClickListener {
             case R.id.ll_brightness_front:
                 Log.e("TAG", "ll_brightness_front");
                 brightnessFlipCard(v);
+                flipCard(v,1);//将模式选项卡返回正面
                 break;
         }
     }

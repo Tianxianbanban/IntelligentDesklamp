@@ -96,8 +96,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="20dp"
                 android:src="@drawable/clock"
-                android:layout_width="50dp"
-                android:layout_height="50dp" />
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
             <LinearLayout
                 android:layout_gravity="center_vertical"
                 android:orientation="vertical"
@@ -127,8 +127,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="20dp"
                 android:src="@drawable/correct"
-                android:layout_width="50dp"
-                android:layout_height="50dp" />
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
             <LinearLayout
                 android:layout_gravity="center_vertical"
                 android:orientation="vertical"
@@ -191,6 +191,7 @@
                 android:layout_height="match_parent">
                 <ImageView
                     android:id="@+id/image_chat_nodata"
+                    android:visibility="invisible"
                     android:layout_centerInParent="true"
                     android:layout_width="150dp"
                     android:layout_height="150dp" />

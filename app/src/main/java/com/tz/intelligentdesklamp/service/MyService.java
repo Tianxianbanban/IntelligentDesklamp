@@ -79,6 +79,7 @@ public class MyService extends Service {
                             int code=getBaseData.getCode();
                             if (code==0){
                                 score=getBaseData.getData().getBaseDataViewObject().getScore();//评分
+
                                 grade=getBaseData.getData().getBaseDataViewObject().getGrade();//等级
                                 totalTime=getBaseData.getData().getBaseDataViewObject().getTotalTime();//学习时长
                                 accuracy=getBaseData.getData().getBaseDataViewObject().getAccuracy();//坐姿正确率
@@ -121,8 +122,8 @@ public class MyService extends Service {
             }
         }).start();
         AlarmManager manager=(AlarmManager)getSystemService(ALARM_SERVICE);
-        int halfAnHour=60*60*1000;//假设一小时获取一次
-//        int halfAnHour=2*1000;//假设两秒获取一次
+//        int halfAnHour=60*60*1000;//假设一小时获取一次
+        int halfAnHour=1000;//假设秒获取一次
         long triggerAtTime=SystemClock.elapsedRealtime()+halfAnHour;
         Intent i=new Intent(this,MyService.class);
         PendingIntent pi=PendingIntent.getService(this,0,i,0);

@@ -40,7 +40,7 @@ public class LearningTime extends BaseDataActivity implements View.OnClickListen
     String TAG="LearningTime";
 
     //头部
-    private TextView tx_data_learning_back;//返回
+    private ImageView image_data_learning_back;//返回
     private Button bt_data_learning_date_cut;//查询上周
     private Button bt_data_learning_date_add;//查询下周
     private TextView tx_data_learning_date;//日期显示
@@ -59,7 +59,7 @@ public class LearningTime extends BaseDataActivity implements View.OnClickListen
         setContentView(R.layout.activity_learning_time);
 
 
-        tx_data_learning_back=(TextView) findViewById(R.id.tx_data_learning_back);//返回
+        image_data_learning_back=(ImageView) findViewById(R.id.image_data_learning_back);//返回
         bt_data_learning_date_cut=(Button)findViewById(R.id.bt_data_learning_date_cut);
         bt_data_learning_date_add=(Button)findViewById(R.id.bt_data_learning_date_add);
         tx_data_learning_date=(TextView)findViewById(R.id.tx_data_learning_date);
@@ -81,7 +81,7 @@ public class LearningTime extends BaseDataActivity implements View.OnClickListen
         learningInitdata(InfoSave.getGetStudyTimeDataUrl(),getContext(),getDate());
 
         //点击事件
-        tx_data_learning_back.setOnClickListener(this);//返回
+        image_data_learning_back.setOnClickListener(this);//返回
         bt_data_learning_date_cut.setOnClickListener(this);//查询上周
         bt_data_learning_date_add.setOnClickListener(this);//查询下周
     }
@@ -110,7 +110,7 @@ public class LearningTime extends BaseDataActivity implements View.OnClickListen
     public void onClick(View view) {
         String requestDateText=null;
         switch (view.getId()){
-            case R.id.tx_data_learning_back://返回
+            case R.id.image_data_learning_back://返回
                 finish();
                 break;
             case R.id.bt_data_learning_date_cut://查询上周

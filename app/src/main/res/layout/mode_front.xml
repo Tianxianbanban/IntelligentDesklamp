@@ -20,9 +20,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="模式"
-            android:textSize="35dp"
+            android:textSize="30dp"
+            android:textColor="@color/colorBlack"
             android:gravity="center|start"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="13dp"/>
 
     </FrameLayout>
 

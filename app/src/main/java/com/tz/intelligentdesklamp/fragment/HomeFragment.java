@@ -20,6 +20,7 @@ import java.util.List;
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
+
     private Button bt_home01;
     private Button bt_home02;
 
@@ -27,7 +28,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     protected View initView() {
         View view = View.inflate(mContext, R.layout.fragment_home, null);
         replaceFragment(new NowFragment());
-
         bt_home01 = view.findViewById(R.id.bt_home01);
         bt_home02 = view.findViewById(R.id.bt_home02);
         bt_home01.setOnClickListener(this);
@@ -40,11 +40,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         BaseFragment to;
         switch (view.getId()){
             case R.id.bt_home01:
-                Toast.makeText(getContext(), "点击显示实时数据", Toast.LENGTH_SHORT).show();
                 replaceFragment(new NowFragment());
                 break;
             case R.id.bt_home02:
-                Toast.makeText(getContext(), "点击显示统计数据", Toast.LENGTH_SHORT).show();
                 replaceFragment(new DataFragment());
         }
     }

@@ -39,7 +39,8 @@
                 <Button
                     android:id="@+id/bt_frag_person_changeImage"
                     android:background="@drawable/options"
-                    android:layout_margin="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="40dp"
                     android:layout_width="25dp"
                     android:layout_height="25dp" />
             </RelativeLayout>

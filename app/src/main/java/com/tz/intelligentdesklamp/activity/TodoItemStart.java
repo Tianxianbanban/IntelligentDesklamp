@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tz.intelligentdesklamp.R;
+import com.tz.intelligentdesklamp.base.BaseActivity;
 import com.tz.intelligentdesklamp.bean.GetBegin;
 import com.tz.intelligentdesklamp.bean.GetEnd;
 import com.tz.intelligentdesklamp.bean.my_info_tosave.TaskAndTime;
@@ -44,7 +45,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
-public class TodoItemStart extends AppCompatActivity implements View.OnClickListener{
+public class TodoItemStart extends BaseActivity implements View.OnClickListener{
     String TAG="TodoItemStart";
     String[] posture={"正确坐姿","左手错误放置","右手错误放置","头左偏","头右偏","身体倾斜","趴下"};
 

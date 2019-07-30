@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,25 +29,38 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieEntry;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.hanks.htextview.HTextView;
 import com.hanks.htextview.HTextViewType;
 import com.tz.intelligentdesklamp.R;
 import com.tz.intelligentdesklamp.base.BaseFragment;
+import com.tz.intelligentdesklamp.bean.GetBaseData;
 import com.tz.intelligentdesklamp.service.MyService;
 import com.tz.intelligentdesklamp.util.chart.PieChartManagger;
+import com.tz.intelligentdesklamp.util.network.HttpUtil;
+import com.tz.intelligentdesklamp.util.network.InfoSave;
 import com.tz.intelligentdesklamp.util.use.Utils;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+
 import static android.content.Context.MODE_PRIVATE;
+import static java.lang.Double.NaN;
 
 public class NowFragment extends BaseFragment implements View.OnClickListener{
+    String TAG="NowFragment";
 
     private IntentFilter intentFilter;//动态注册接收广播
     private NowDataChangedReceiver nowDataChangedReceiver;
 
+    String scoreString="";
     //待接收数据
     double score;//评分
     int grade;//等级
@@ -73,6 +87,7 @@ public class NowFragment extends BaseFragment implements View.OnClickListener{
     private PieChart pie_chat_now;
     private ImageView image_chat_nodata;//无数据时显示
     private TextView tx_chat_nodata;//无数据时显示
+
 
     @Override
     protected View initView() {
@@ -113,20 +128,22 @@ public class NowFragment extends BaseFragment implements View.OnClickListener{
         getContext().startService(intentOfInfo);
 
 
-        SharedPreferences sharedPreferences=getContext().getSharedPreferences("now_data",MODE_PRIVATE);
-        int a=sharedPreferences.getInt("a",0);
-        int b=sharedPreferences.getInt("b",0);
-        int c=sharedPreferences.getInt("c",0);
-        int d=sharedPreferences.getInt("d",0);
-        int e=sharedPreferences.getInt("e",0);
-        int f=sharedPreferences.getInt("f",0);
-        int g=sharedPreferences.getInt("g",0);
-        if (a==0&&b==0&&c==0&&d==0&&e==0&&f==0&&g==0){
-            image_chat_nodata.setVisibility(View.VISIBLE);
-            pie_chat_now.setVisibility(View.GONE);
-        }else{
-            showRingPieChart(a,b,c,d,e,f,g);//饼状图展示
-        }
+
+
+//        SharedPreferences sharedPreferences=getContext().getSharedPreferences("now_data",MODE_PRIVATE);
+//        int a=sharedPreferences.getInt("a",0);
+//        int b=sharedPreferences.getInt("b",0);
+//        int c=sharedPreferences.getInt("c",0);
+//        int d=sharedPreferences.getInt("d",0);
+//        int e=sharedPreferences.getInt("e",0);
+//        int f=sharedPreferences.getInt("f",0);
+//        int g=sharedPreferences.getInt("g",0);
+//        if (a==0&&b==0&&c==0&&d==0&&e==0&&f==0&&g==0){
+//            image_chat_nodata.setVisibility(View.VISIBLE);
+//            pie_chat_now.setVisibility(View.GONE);
+//        }else{
+//            showRingPieChart(a,b,c,d,e,f,g);//饼状图展示
+//        }
         return view;
     }
 
@@ -198,24 +215,41 @@ public class NowFragment extends BaseFragment implements View.OnClickListener{
             int e=intent.getIntExtra("e",0);//头右偏
             int f=intent.getIntExtra("f",0);//身体倾斜
             int g=intent.getIntExtra("g",0);//趴下
-            Log.d("Now_data:", "onReceive: score"+score+" grade"+grade+" totalTime"+totalTime+
-                    " accuracy"+accuracy+" a"+a+" b"+b+" c"+c+" d"+d+" e"+e+" f"+f+" g"+g+" ");
+
+
+            Log.d(TAG, "onReceive: score 实时广播数据"+score+" grade"+grade+" totalTime"+totalTime+
+                    " accuracy"+accuracy+" a"+a+" b"+b+" c"+c+" d"+d+" e"+e+" f"+f+" g"+g);
+//            Toast.makeText(getContext(),"onReceive: score 实时广播数据"+score+" grade"+grade+" totalTime"+totalTime+
+//                    " accuracy"+accuracy+" a"+a+" b"+b+" c"+c+" d"+d+" e"+e+" f"+f+" g"+g,Toast.LENGTH_SHORT).show();
 
             //简单数据处理
-
             if (Float.parseFloat(score)<0){
-                score="0";
+                score="0.0";
             }else if (Float.parseFloat(score)>100){
                 score="100";
-            }else if (score.length()>4){
-
+            }else if (score.equals("NaN")){
+                score="0.0";
             }
+
+            if (totalTime<0){
+                totalTime=0;
+            }else if (totalTime>10000){
+                totalTime=10000;
+            }
+
+
             DecimalFormat decimalFormat=new DecimalFormat("0.00%");//将正确率换成百分数
             String accuracyb=decimalFormat.format(Double.valueOf(accuracy));
+
+
             //UI变化
-//            htx_now_score.setText(score);//分数
-            htx_now_score.setAnimateType(HTextViewType.LINE);
-            htx_now_score.animateText(score);
+            if (score.equals(scoreString)){
+
+            }else{
+                htx_now_score.setAnimateType(HTextViewType.SCALE);
+                htx_now_score.animateText(String.format("%.2f",Double.parseDouble(score)));
+                scoreString=score;
+            }
 
             Utils.setGradeShow(grade,grade_star_1,grade_star_2,grade_star_3,grade_star_4,grade_star_5);//等级展示
             tx_now_time.setText(String.valueOf(totalTime));//学习时长
@@ -223,15 +257,21 @@ public class NowFragment extends BaseFragment implements View.OnClickListener{
 
             if (a==0&&b==0&&c==0&&d==0&&e==0&&f==0&&g==0){
                 pie_chat_now.setVisibility(View.GONE);
+                image_chat_nodata.setVisibility(View.VISIBLE);
                 Glide.with(getContext()).load(R.drawable.nodata).into(image_chat_nodata);
                 tx_chat_nodata.setVisibility(View.VISIBLE);
-//                image_chat_nodata.setVisibility(View.VISIBLE);
             }else{
+                image_chat_nodata.setVisibility(View.GONE);
+                tx_chat_nodata.setVisibility(View.GONE);
                 showRingPieChart(a,b,c,d,e,f,g);//饼状图展示
                 pie_chat_now.setVisibility(View.VISIBLE);
             }
 
         }
     }
+
+
+
+
 
 }

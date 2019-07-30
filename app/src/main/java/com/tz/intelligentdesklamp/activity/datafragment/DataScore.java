@@ -39,7 +39,7 @@ import okhttp3.Response;
 public class DataScore extends BaseDataActivity implements View.OnClickListener{
     String TAG="DataScore";
     //顶部
-    private TextView tx_data_score_back;//返回
+    private ImageView image_data_score_back;//返回
     private Button bt_data_score_date_cut;
     private Button bt_data_score_date_add;
     private TextView tx_data_score_date;
@@ -57,7 +57,7 @@ public class DataScore extends BaseDataActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_score);
 
-        tx_data_score_back=(TextView)findViewById(R.id.tx_data_score_back);
+        image_data_score_back=(ImageView) findViewById(R.id.image_data_score_back);
         bt_data_score_date_cut=(Button)findViewById(R.id.bt_data_score_date_cut);
         bt_data_score_date_add=(Button)findViewById(R.id.bt_data_score_date_add);
         tx_data_score_date=(TextView)findViewById(R.id.tx_data_score_date);
@@ -81,7 +81,7 @@ public class DataScore extends BaseDataActivity implements View.OnClickListener{
         /*
         点击事件
          */
-        tx_data_score_back.setOnClickListener(this);
+        image_data_score_back.setOnClickListener(this);
         bt_data_score_date_cut.setOnClickListener(this);
         bt_data_score_date_add.setOnClickListener(this);
     }
@@ -175,7 +175,7 @@ public class DataScore extends BaseDataActivity implements View.OnClickListener{
     public void onClick(View view) {
         String requestDateText=null;
         switch (view.getId()){
-            case R.id.tx_data_score_back:
+            case R.id.image_data_score_back:
                 finish();
                 break;
             case R.id.bt_data_score_date_cut:

@@ -38,7 +38,7 @@ import okhttp3.Response;
 public class AttentionDetails extends BaseDataActivity implements View.OnClickListener {
     String TAG="AttentionDetails";
 
-    private TextView tx_data_attention_back;
+    private ImageView image_data_attention_back;
     private TextView tx_data_attention_date;
     private Button bt_data_attention_date_cut;
     private Button bt_data_attention_date_add;
@@ -53,7 +53,7 @@ public class AttentionDetails extends BaseDataActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attention_details);
 
-        tx_data_attention_back=(TextView)findViewById(R.id.tx_data_attention_back);
+        image_data_attention_back=(ImageView)findViewById(R.id.image_data_attention_back);
         tx_data_attention_date=(TextView)findViewById(R.id.tx_data_attention_date);
         bt_data_attention_date_cut=(Button)findViewById(R.id.bt_data_attention_date_cut);
         bt_data_attention_date_add=(Button)findViewById(R.id.bt_data_attention_date_add);
@@ -70,7 +70,7 @@ public class AttentionDetails extends BaseDataActivity implements View.OnClickLi
         tx_data_attention_date.setText(getDate());
         attentionInitdata(InfoSave.getGetFocusDataUrl(),getContext(),getDate());
 
-        tx_data_attention_back.setOnClickListener(this);
+        image_data_attention_back.setOnClickListener(this);
         bt_data_attention_date_cut.setOnClickListener(this);
         bt_data_attention_date_add.setOnClickListener(this);
     }
@@ -79,7 +79,7 @@ public class AttentionDetails extends BaseDataActivity implements View.OnClickLi
     public void onClick(View view) {
         String requestDateText=null;
         switch (view.getId()){
-            case R.id.tx_data_attention_back:
+            case R.id.image_data_attention_back:
                 finish();
                 break;
             case R.id.bt_data_attention_date_cut:

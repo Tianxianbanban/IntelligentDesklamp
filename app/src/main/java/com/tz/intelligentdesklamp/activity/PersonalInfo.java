@@ -185,24 +185,28 @@ public class PersonalInfo extends AppCompatActivity {
                                     @Override
                                     public void onResponse(Call call, Response response) throws IOException {
                                         String responseData=response.body().string();
-                                        if (response.code()==200){//若正常返回
-                                            Gson gson=new Gson();
-                                            BasicData basicData=gson.fromJson(responseData,BasicData.class);
-                                            if (basicData.getCode()==0){
+                                        try{
+                                            if (response.code()==200){//若正常返回
+                                                Gson gson=new Gson();
+                                                BasicData basicData=gson.fromJson(responseData,BasicData.class);
+                                                if (basicData.getCode()==0){
+                                                    runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            HttpUtil.showSuccess(PersonalInfo.this,"上传成功！");
+                                                        }
+                                                    });
+                                                }
+                                            }else{
                                                 runOnUiThread(new Runnable() {
                                                     @Override
                                                     public void run() {
-                                                        HttpUtil.showSuccess(PersonalInfo.this,"上传成功！");
+                                                        HttpUtil.showSuccess(PersonalInfo.this,"服务器故障！");
                                                     }
                                                 });
                                             }
-                                        }else{
-                                            runOnUiThread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    HttpUtil.showSuccess(PersonalInfo.this,"服务器故障！");
-                                                }
-                                            });
+                                        }catch (Exception e){
+                                            e.printStackTrace();
                                         }
 
                                     }

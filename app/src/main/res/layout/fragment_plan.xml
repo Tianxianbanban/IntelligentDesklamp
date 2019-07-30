@@ -3,24 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#dddddd">
+    android:background="@color/colorLightBlue">
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/ll_reset"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp">
 
+        <ImageView
+            android:id="@+id/image_show_cloud"
+            android:layout_gravity="right|top"
+            android:layout_width="300dp"
+            android:layout_height="300dp" />
         <TextView
             android:id="@+id/tv_show_mode_status"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="text"
-            android:textSize="23sp"/>
+            android:layout_marginTop="40dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="22sp"/>
 
-    </LinearLayout>
+    </FrameLayout>
 
 
     <include layout="@layout/music_front" />
