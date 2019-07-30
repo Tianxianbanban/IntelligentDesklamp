@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -64,6 +66,7 @@ public class DataFragment extends BaseFragment implements View.OnClickListener{
         Glide.with(this).load(R.drawable.back_flower).into(image_posture_data_back_flower);
         image_data_posture_grade=(ImageView)view.findViewById(R.id.image_data_posture_grade);//蛋糕等级图片
         image_data_posture_grade.setImageResource(R.drawable.cake_grade_4);
+
 
 
         HTextView htx=view.findViewById(R.id.htx);

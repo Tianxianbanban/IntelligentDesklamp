@@ -13,13 +13,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.google.gson.Gson;
 import com.tz.intelligentdesklamp.R;
+import com.tz.intelligentdesklamp.activity.datafragment.BaseDataActivity;
 import com.tz.intelligentdesklamp.adpter.about.ItemOfPersonalInfo;
 import com.tz.intelligentdesklamp.adpter.PersonalInfoAdapeter;
+import com.tz.intelligentdesklamp.base.BaseActivity;
 import com.tz.intelligentdesklamp.bean.BasicData;
 import com.tz.intelligentdesklamp.util.use_never.FileUpload;
 import com.tz.intelligentdesklamp.util.network.HttpUtil;
@@ -41,11 +45,12 @@ import okhttp3.Response;
  * 修改后根据返回数据替换信息内容
  */
 
-public class PersonalInfo extends AppCompatActivity {
+public class PersonalInfo extends BaseActivity {
     final int IMAGE_CHOOSE=11;
 
     private List<ItemOfPersonalInfo> itemOfPersonalInfos=new ArrayList<>();
     private LinearLayout personalInfo_head;
+    Button bt_personalinfo_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +58,14 @@ public class PersonalInfo extends AppCompatActivity {
         setContentView(R.layout.activity_personal_info);
 
         personalInfo_head=(LinearLayout)findViewById(R.id.personalInfo_head);
+        bt_personalinfo_back=(Button)findViewById(R.id.bt_personalinfo_back);
+
+        bt_personalinfo_back.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         //头像部分的点击事件
         personalInfo_head.setOnClickListener(new View.OnClickListener() {
@@ -134,12 +147,10 @@ public class PersonalInfo extends AppCompatActivity {
                         itemOfPersonalInfos.get(0).setContent(returnData);
                         break;
                     case 1://性别这里注意
-                        if (returnData.equals("男")) {
-                            editor.putInt("sex", 0);
-                        } else if (returnData.equals("女")) {
-                            editor.putInt("sex", 1);
-                        } else {
-                            editor.putInt("sex", -1);
+                        if (returnData.equals("true")) {
+                            editor.putBoolean("sex", true);
+                        } else{
+                            editor.putBoolean("sex", false);
                         }
                         itemOfPersonalInfos.get(1).setContent(returnData);
                         break;
@@ -230,7 +241,7 @@ public class PersonalInfo extends AppCompatActivity {
         //取出信息
         int id=getSharedPreferences("userInfo_data", MODE_PRIVATE).getInt("id", 0);
         String age=getSharedPreferences("userInfo_data", MODE_PRIVATE).getString("age", "0");
-        int sex=getSharedPreferences("userInfo_data", MODE_PRIVATE).getInt("sex", 1);//默认为女
+        boolean sex=getSharedPreferences("userInfo_data", MODE_PRIVATE).getBoolean("sex", false);//性别
         String phoneNum=getSharedPreferences("userInfo_data", MODE_PRIVATE).getString("phoneNum", "未填写");
         String email=getSharedPreferences("userInfo_data", MODE_PRIVATE).getString("email", "未填写");
         String region=getSharedPreferences("userInfo_data", MODE_PRIVATE).getString("region", "未填写");
@@ -238,17 +249,10 @@ public class PersonalInfo extends AppCompatActivity {
         String nickName=getSharedPreferences("userInfo_data", MODE_PRIVATE).getString("nickName", "未填写");
         String backgroundPath=getSharedPreferences("userInfo_data", MODE_PRIVATE).getString("backgroundPath", "未填写");
 
-        String sexcontent;
-        if (sex==0){
-            sexcontent="男";
-        }else if (sex==1){
-            sexcontent="女";
-        }else {
-            sexcontent="未填写";
-        }
+
         ItemOfPersonalInfo infoE=new ItemOfPersonalInfo("昵称",nickName,R.drawable.right);
         itemOfPersonalInfos.add(infoE);
-        ItemOfPersonalInfo infoF=new ItemOfPersonalInfo("性别",sexcontent,R.drawable.right);
+        ItemOfPersonalInfo infoF=new ItemOfPersonalInfo("性别",String.valueOf(sex),R.drawable.right);
         itemOfPersonalInfos.add(infoF);
         ItemOfPersonalInfo infoA=new ItemOfPersonalInfo("年龄",age,R.drawable.right);
         itemOfPersonalInfos.add(infoA);
@@ -261,56 +265,5 @@ public class PersonalInfo extends AppCompatActivity {
     }
 
 
-
-//        /**
-//         * 请求获取用户信息
-//         */
-//        int idcontent=getSharedPreferences("login_data", MODE_PRIVATE).getInt("id", 0);
-//        final RequestBody requestBody=new FormBody.Builder().add("id",String.valueOf(idcontent)).build();
-//        HttpUtil.sendOkHttpRequestWithTokenAndBody(InfoSave.getGetUserInfoUrl(),PersonalInfo.this, requestBody, new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                HttpUtil.showWrong(PersonalInfo.this,"服务器故障！");
-//            }
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                String responseData=response.body().string();
-//                //解析
-//                Gson gson=new Gson();
-//                GetUserInfo getUserInfo=gson.fromJson(responseData,new TypeToken<GetUserInfo>(){}.getType());
-//
-//                if (getUserInfo.getCode()==0){
-//                    //解析具体数据
-//                    int id=getUserInfo.getData().getUserInfo().getId();
-//                    String age=getUserInfo.getData().getUserInfo().getAge();//
-//                    boolean sex=getUserInfo.getData().getUserInfo().isSex();//性别是int
-//                    String phoneNum=getUserInfo.getData().getUserInfo().getPhoneNum();
-//                    String email=getUserInfo.getData().getUserInfo().getEmail();
-//                    String region=getUserInfo.getData().getUserInfo().getRegion();
-//                    String imagePath=getUserInfo.getData().getUserInfo().getImagePath();
-//                    String nickName=getUserInfo.getData().getUserInfo().getNickName();
-//                    String backgroundPath=getUserInfo.getData().getUserInfo().getBackgroundPath();
-//
-//                    //将获取到的个人信息进行保存
-//                    SharedPreferences.Editor editor=getSharedPreferences("userInfo_data",MODE_PRIVATE).edit();
-//                    editor.putInt("id",id);
-//                    editor.putString("age",age);
-//                    if (sex==true){
-//                        editor.putInt("sex",1);
-//                    }else if (sex==false){
-//                        editor.putInt("sex",0);
-//                    }else {
-//                        editor.putInt("sex",-1);
-//                    }
-//                    editor.putString("phoneNum",phoneNum);
-//                    editor.putString("email",email);
-//                    editor.putString("region",region);
-//                    editor.putString("imagePath",imagePath);
-//                    editor.putString("nickName",nickName);
-//                    editor.putString("backgroundPath",backgroundPath);
-//                    editor.apply();
-//                    }
-//            }
-//        });
 
 }

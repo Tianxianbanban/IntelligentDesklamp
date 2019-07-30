@@ -139,11 +139,13 @@ public class AttentionDetails extends BaseDataActivity implements View.OnClickLi
                                         is=true;
                                     }
                                 }
-                                if (is){
+                                if (is){//只要有数据
                                     linechart_data_attention.setVisibility(View.VISIBLE);
+                                    image_attention_nodata.setVisibility(View.GONE);
                                     showAlone(focusDatas);//折线图
                                 }else{
                                     linechart_data_attention.setVisibility(View.GONE);
+                                    image_attention_nodata.setVisibility(View.VISIBLE);
                                     Glide.with(AttentionDetails.this).load(R.drawable.nodata).into(image_attention_nodata);
                                 }
 

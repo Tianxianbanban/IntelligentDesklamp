@@ -39,18 +39,14 @@ import okhttp3.Response;
 public class LearningTime extends BaseDataActivity implements View.OnClickListener{
     String TAG="LearningTime";
 
-    //头部
     private ImageView image_data_learning_back;//返回
     private Button bt_data_learning_date_cut;//查询上周
     private Button bt_data_learning_date_add;//查询下周
     private TextView tx_data_learning_date;//日期显示
-    //中部
     private LineChart lineChart;//折线图
     private ImageView image_learning_nodata;
-    //底部
     private TextView tx_data_learning_timelength;//总时长
     private TextView tx_data_learning_average;//平均值
-    //等级相关
     private ImageView star1,star2,star3,star4,star5;
 
     @Override
@@ -63,7 +59,6 @@ public class LearningTime extends BaseDataActivity implements View.OnClickListen
         bt_data_learning_date_cut=(Button)findViewById(R.id.bt_data_learning_date_cut);
         bt_data_learning_date_add=(Button)findViewById(R.id.bt_data_learning_date_add);
         tx_data_learning_date=(TextView)findViewById(R.id.tx_data_learning_date);
-//        linechart_data_learning=(LineChart)findViewById(R.id.linechart_data_learning);//折线图
         lineChart=(LineChart)findViewById(R.id.linechart_data_learning);//折线图
         image_learning_nodata=(ImageView)findViewById(R.id.image_learning_nodata);
         tx_data_learning_timelength=(TextView)findViewById(R.id.tx_data_learning_timelength);//学习时长
@@ -74,13 +69,11 @@ public class LearningTime extends BaseDataActivity implements View.OnClickListen
         star4=(ImageView)findViewById(R.id.star4);
         star5=(ImageView)findViewById(R.id.star5);
 
-        /*
-        界面初始设置
-         */
-        tx_data_learning_date.setText(getDate());//显示当天日期
-        learningInitdata(InfoSave.getGetStudyTimeDataUrl(),getContext(),getDate());
 
-        //点击事件
+        tx_data_learning_date.setText(getDate());//显示当天日期
+        learningInitdata(getDate());
+
+
         image_data_learning_back.setOnClickListener(this);//返回
         bt_data_learning_date_cut.setOnClickListener(this);//查询上周
         bt_data_learning_date_add.setOnClickListener(this);//查询下周
@@ -116,7 +109,7 @@ public class LearningTime extends BaseDataActivity implements View.OnClickListen
             case R.id.bt_data_learning_date_cut://查询上周
                 requestDateText=getCutRequestDateText(tx_data_learning_date.getText().toString());
                 //发出请求,继续查询上一周,并且更新UI
-                learningInitdata(InfoSave.getGetStudyTimeDataUrl(),getContext(),requestDateText);
+                learningInitdata(requestDateText);
                 //处理数据弹出反馈
                 tx_data_learning_date.setText(requestDateText);
                 Toast.makeText(getContext(), "数据始于"+requestDateText, Toast.LENGTH_SHORT).show();
@@ -127,7 +120,7 @@ public class LearningTime extends BaseDataActivity implements View.OnClickListen
                 }else {
                     requestDateText=getAddRequestDateText(tx_data_learning_date.getText().toString());//获取请求日期
                     //发出请求,继续查询下一周，并且更新UI
-                    learningInitdata(InfoSave.getGetStudyTimeDataUrl(),getContext(),requestDateText);
+                    learningInitdata(requestDateText);
                     //处理数据弹出反馈
                     tx_data_learning_date.setText(requestDateText);
                     Toast.makeText(getContext(), "数据始于"+requestDateText, Toast.LENGTH_SHORT).show();
@@ -138,13 +131,13 @@ public class LearningTime extends BaseDataActivity implements View.OnClickListen
 
 
     //根据当前日期发起网络请求获取当前日期的统计数据
-    public void learningInitdata(String url, final Context context, String dateText){
+    public void learningInitdata(final String dateText){
 
         final RequestBody requestBody=new FormBody.Builder()
                 .add("date",dateText)
                 .build();
 
-        HttpUtil.sendOkHttpRequestWithTokenAndBody(url,getContext(), requestBody, new Callback() {
+        HttpUtil.sendOkHttpRequestWithTokenAndBody(InfoSave.getStudyTimeDataUrl,getContext(), requestBody, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 showServiceInfo(getContext(),"服务器故障");
@@ -152,7 +145,7 @@ public class LearningTime extends BaseDataActivity implements View.OnClickListen
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseData=response.body().string();
-                Log.d(TAG, "onResponse: "+responseData);
+                Log.d(TAG, "请求学习时间onResponse: "+responseData);
                 if (response.code()==200){//如果正常返回开始解析
                     try{
                         Gson gson=new Gson();
@@ -162,7 +155,7 @@ public class LearningTime extends BaseDataActivity implements View.OnClickListen
                             final Float totalTime=getStudyTimeData.getData().getStudyTimeData().getTotalTime();
                             final Float average=getStudyTimeData.getData().getStudyTimeData().getAverage();
                             final int grade=getStudyTimeData.getData().getStudyTimeData().getGrade();
-                            Log.d(TAG, "onResponse: GetStudyTimeData-----"+" times.size():"+times.size()+" totalTime:"+totalTime+" average:"+average+" grade:"+grade);
+                            Log.d(TAG, "学习时间: GetStudyTimeData-----"+" dateText"+dateText+" times.size()="+times.size()+" totalTime="+totalTime+" average="+average+" grade="+grade);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -174,9 +167,11 @@ public class LearningTime extends BaseDataActivity implements View.OnClickListen
                                     }
                                     if (is){
                                         lineChart.setVisibility(View.VISIBLE);
+                                        image_learning_nodata.setVisibility(View.GONE);
                                         showAlone(times);//折线图
                                     }else{
                                         lineChart.setVisibility(View.GONE);
+                                        image_learning_nodata.setVisibility(View.VISIBLE);
                                         Glide.with(LearningTime.this).load(R.drawable.nodata).into(image_learning_nodata);
                                     }
 

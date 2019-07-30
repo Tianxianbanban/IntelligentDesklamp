@@ -43,7 +43,7 @@ public class BarChartManager {
         barChart.setDrawBorders(false);
         //设置动画效果
         barChart.animateY(1000,Easing.EasingOption.Linear);
-        barChart.animateX(1000,Easing.EasingOption.Linear);
+//        barChart.animateX(1000,Easing.EasingOption.Linear);
         //图例设置
         Legend legend=barChart.getLegend();
         legend.setForm(Legend.LegendForm.NONE);//图例窗体的形状
@@ -83,6 +83,7 @@ public class BarChartManager {
         initBarChart(); //首先基本数据的初始化
         List<BarEntry> entries = new ArrayList<>();//将数据源添加到图
         for (int i = 0;i<xAxisValues.size(); i++) {//将横纵坐标放置
+
             entries.add(new BarEntry(xAxisValues.get(i),yAxisValues.get(i)));
         }
         BarDataSet barDataSet = new BarDataSet(entries, label);

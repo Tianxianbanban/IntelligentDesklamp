@@ -43,8 +43,8 @@ xmlns:htext="http://schemas.android.com/apk/res-auto"-->
             <ImageView
                 android:id="@+id/image_data_posture_grade"
                 android:layout_margin="10dp"
-                android:layout_width="130dp"
-                android:layout_height="130dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center_horizontal" />
 
             <TextView
@@ -54,7 +54,7 @@ xmlns:htext="http://schemas.android.com/apk/res-auto"-->
                 android:layout_margin="10dp"
                 android:textColor="@color/colorBlack"
                 android:layout_gravity="center_horizontal"
-                android:text=" 棒棒！很快就能养成正确坐姿习惯啦！" />
+                android:text="又是棒棒的一天！" />
 
         </LinearLayout>
     </FrameLayout>

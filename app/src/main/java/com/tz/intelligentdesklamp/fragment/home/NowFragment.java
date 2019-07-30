@@ -177,13 +177,13 @@ public class NowFragment extends BaseFragment implements View.OnClickListener{
         yvals.add(new PieEntry(g, "身体倾斜"));
         // 设置每份的颜色
         List<Integer> colors = new ArrayList<>();
-        colors.add(Color.parseColor("#A0F8E7"));
-        colors.add(Color.parseColor("#99FFAD"));
-        colors.add(Color.parseColor("#FFAD99"));
-        colors.add(Color.parseColor("#DABFDA"));
-        colors.add(Color.parseColor("#CCCCCC"));
-        colors.add(Color.parseColor("#FFAD77"));
-        colors.add(Color.parseColor("#FFAD77"));
+        colors.add(Color.parseColor("#C4E6E6"));
+        colors.add(Color.parseColor("#F1F141"));
+        colors.add(Color.parseColor("#A4F790"));
+        colors.add(Color.parseColor("#FF8F44"));
+        colors.add(Color.parseColor("#FFBBD6"));
+        colors.add(Color.parseColor("#A3B0C2"));
+        colors.add(Color.parseColor("#FF9277"));
 
         PieChartManagger pieChartManagger=new PieChartManagger(pie_chat_now);
         pieChartManagger.showRingPieChart(yvals,colors);

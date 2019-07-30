@@ -262,8 +262,11 @@ public class TodoItemStart extends BaseActivity implements View.OnClickListener{
         super.onDestroy();
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+        timeThread.interrupt();//停止倒计时多线程
+        super.onBackPressed();
+    }
 
     //番茄钟个数增减对话框
     private void show(){
@@ -319,7 +322,7 @@ public class TodoItemStart extends BaseActivity implements View.OnClickListener{
             frequent=getEnd.getData().getFeedback().getFrequent();//最频繁的错误姿势
             info_content="你已经学习25分钟啦：\n\n\t\t在这段时间里，你出现了__"+ wrongCount+ "__次不正确的坐姿哦！" +
                     "你最频繁的错误坐姿是__"+posture[frequent]+"__。" +
-                    " 后台根据你的坐姿变化情况分析得出你的工作效率为__"+effectiveness+"__," +
+                    " 后台根据你的坐姿变化情况分析得出你的工作效率为__"+(String.valueOf(effectiveness).equals("NaN")?0:effectiveness)+"__," +
                     "折合有效时间是__"+effectiveTime+"__分钟。" +
                     "要累计任务时间吗?";
             tx_center_menu_info.setText(info_content);
@@ -362,13 +365,13 @@ public class TodoItemStart extends BaseActivity implements View.OnClickListener{
         tx_efficiency_start_task=(TextView)findViewById(R.id.tx_efficiency_start_task) ;//当前任务
         tx_todoitemstart_time=(TextView)findViewById(R.id.tx_todoitemstart_time);
         //初始番茄钟时间
-        limitSec=1;
+        limitSec=25;
         limitSecMili=limitSec*60;
         seconds=limitSecMili%60;//显示的秒数
         min=(limitSecMili/60)%60;//显示分钟数
         hour=limitSecMili/60/60;//显示小时数
 
-        tx_efficiency_start_task.setText(taskAtNow+"…");
+        tx_efficiency_start_task.setText(taskAtNow);
         tx_todoitemstart_time.setText((String.valueOf(hour).length()>1?String.valueOf(hour):("0"+String.valueOf(hour)))+ ":"
                 +((String.valueOf(min).length()>1)?String.valueOf(min):("0"+String.valueOf(min)))+":"
                 +((String.valueOf(seconds).length()>1)?String.valueOf(seconds):("0"+String.valueOf(seconds))));

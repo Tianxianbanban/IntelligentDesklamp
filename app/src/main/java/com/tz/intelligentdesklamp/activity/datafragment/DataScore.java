@@ -38,18 +38,14 @@ import okhttp3.Response;
 
 public class DataScore extends BaseDataActivity implements View.OnClickListener{
     String TAG="DataScore";
-    //顶部
-    private ImageView image_data_score_back;//返回
+    private ImageView image_data_score_back;
     private Button bt_data_score_date_cut;
     private Button bt_data_score_date_add;
     private TextView tx_data_score_date;
     private ImageView image_score_nodata;
-    //中部
     BarChart barchart_data_score;//柱状图
-    //底部
     private TextView tx_data_score_average;//期望
     private TextView tx_data_score_variance;//方差
-    //等级
     private ImageView star21,star22,star23,star24,star25;
 
     @Override
@@ -75,100 +71,14 @@ public class DataScore extends BaseDataActivity implements View.OnClickListener{
          * 界面内容初始布置
          */
         tx_data_score_date.setText(getDate());//当前日期
-        markInitdata(InfoSave.getGetMarkDataUrl(),getContext(),getDate());//所有数据
-//        showBarChart();
+        markInitdata(getDate());//所有数据
 
-        /*
-        点击事件
-         */
+
         image_data_score_back.setOnClickListener(this);
         bt_data_score_date_cut.setOnClickListener(this);
         bt_data_score_date_add.setOnClickListener(this);
     }
 
-
-    //根据当前日期发起网络请求获取当前日期的统计数据
-    public void markInitdata(String url, final Context context, String dateText){
-
-        final RequestBody requestBody=new FormBody.Builder()
-                .add("date",dateText)
-                .build();
-
-        HttpUtil.sendOkHttpRequestWithTokenAndBody(url,getContext(), requestBody, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                showServiceInfo(getContext(),"服务器故障");
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseData=response.body().string();
-                Log.d(TAG, "onResponse: "+responseData);
-                if (response.code()==200){//如果正常返回开始解析
-                    Gson gson=new Gson();
-                    GetMarkData getMarkData=gson.fromJson(responseData, new TypeToken<GetMarkData>(){}.getType());
-                    if (getMarkData.getCode()==0){
-                        final List<Float> scores=getMarkData.getData().getMarkData().getScore();
-                        final float average=getMarkData.getData().getMarkData().getAverage();
-                        final float variance=getMarkData.getData().getMarkData().getVariance();
-                        final int grade=getMarkData.getData().getMarkData().getGrade();
-                        Log.d(TAG, "onResponse: GetStudyTimeData-----"+" scores.size():"+scores.size()+" average:"+average+" variance:"+variance+" grade:"+grade);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                boolean is=false;
-                                for (Float data:scores) {
-                                    if (data>0){
-                                        is=true;
-                                    }
-                                }
-                                if (is){
-                                    barchart_data_score.setVisibility(View.VISIBLE);
-                                    showBarChart(scores);//折线图
-                                }else {
-                                    barchart_data_score.setVisibility(View.GONE);
-                                    Glide.with(DataScore.this).load(R.drawable.nodata).into(image_score_nodata);
-                                }
-
-                                tx_data_score_average.setText(String.valueOf(average));//总时长
-                                tx_data_score_variance.setText(String.valueOf(variance));//平均值
-                                Utils.setGradeShow(grade,star21,star22,star23,star24,star25);//等级设置
-                            }
-                        });
-                    }
-                }else{
-                    showServiceInfo(getContext(),"服务器故障");
-                }
-            }
-        });
-    }
-    //展示柱状图
-    private void showBarChart(List<Float> data) {
-        // 横轴
-        List<Float> xyvals = new ArrayList<>();
-        xyvals.add((float) 1);
-        xyvals.add((float) 2);
-        xyvals.add((float) 3);
-        xyvals.add((float) 4);
-        xyvals.add((float) 5);
-        xyvals.add((float) 6);
-        xyvals.add((float) 7);
-        //纵轴
-        List<Float> yyvals = new ArrayList<>();
-//        yyvals.add(31.1f);
-//        yyvals.add(2.1f);
-//        yyvals.add(34.1f);
-//        yyvals.add(91.0f);
-//        yyvals.add(31.0f);
-//        yyvals.add(81.0f);
-//        yyvals.add(81.0f);
-        for (int i=0;i<data.size();i++){
-            yyvals.add(data.get(i));
-        }
-        //颜色
-        Integer color=Color.parseColor("#11C2EE");
-        BarChartManager barChartManager=new BarChartManager(barchart_data_score);
-        barChartManager.showBarChartA(xyvals,yyvals,"",color);
-    }
 
 
     @Override
@@ -180,9 +90,7 @@ public class DataScore extends BaseDataActivity implements View.OnClickListener{
                 break;
             case R.id.bt_data_score_date_cut:
                 requestDateText=getCutRequestDateText(tx_data_score_date.getText().toString());
-                //发出请求,继续查询上一周,并且更新UI
-//                markInitdata(InfoSave.getGetStudyTimeDataUrl(),getContext(),requestDateText);
-                //处理数据弹出反馈
+                markInitdata(requestDateText);
                 tx_data_score_date.setText(requestDateText);
                 Toast.makeText(getContext(), "数据始于"+requestDateText, Toast.LENGTH_SHORT).show();
                 break;
@@ -191,9 +99,7 @@ public class DataScore extends BaseDataActivity implements View.OnClickListener{
                     Toast.makeText(getContext(),"无法查询当前的下一周。",Toast.LENGTH_SHORT).show();
                 }else {
                     requestDateText=getAddRequestDateText(tx_data_score_date.getText().toString());//获取请求日期
-                    //发出请求,继续查询下一周，并且更新UI
-//                    markInitdata(InfoSave.getGetMarkDataUrl(),getContext(),requestDateText);
-                    //处理数据弹出反馈
+                    markInitdata(requestDateText);
                     tx_data_score_date.setText(requestDateText);
                     Toast.makeText(getContext(), "数据始于"+requestDateText, Toast.LENGTH_SHORT).show();
                 }
@@ -201,4 +107,94 @@ public class DataScore extends BaseDataActivity implements View.OnClickListener{
 
         }
     }
+
+    //展示柱状图
+    private void showBarChart(List<Float> data) {
+        // 横轴
+        List<Float> xyvals = new ArrayList<>();
+        xyvals.add((float) 1);
+        xyvals.add((float) 2);
+        xyvals.add((float) 3);
+        xyvals.add((float) 4);
+        xyvals.add((float) 5);
+        xyvals.add((float) 6);
+        xyvals.add((float) 7);
+
+
+        //纵轴
+        List<Float> yyvals = new ArrayList<>();
+
+        for (int i=0;i<data.size();i++){
+            yyvals.add(data.get(i));
+        }
+        //颜色
+        Integer color=Color.parseColor("#11C2EE");
+        BarChartManager barChartManager=new BarChartManager(barchart_data_score);
+        barChartManager.showBarChartA(xyvals,yyvals,"",color);
+    }
+
+
+    //根据当前日期发起网络请求获取当前日期的统计数据
+    public void markInitdata(final String dateText){
+
+        final RequestBody requestBody=new FormBody.Builder()
+                .add("date",dateText)
+                .build();
+
+        HttpUtil.sendOkHttpRequestWithTokenAndBody(InfoSave.getMarkDataUrl,getContext(), requestBody, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                showServiceInfo(getContext(),"服务器故障");
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData=response.body().string();
+                Log.d(TAG, "请求评分数据------onResponse: "+responseData);
+                try{
+                    if (response.code()==200){//如果正常返回开始解析
+                        Gson gson=new Gson();
+                        GetMarkData getMarkData=gson.fromJson(responseData, new TypeToken<GetMarkData>(){}.getType());
+                        if (getMarkData.getCode()==0){
+                            final List<Float> scores=getMarkData.getData().getMarkData().getScore();
+                            final float average=getMarkData.getData().getMarkData().getAverage();
+                            final float variance=getMarkData.getData().getMarkData().getVariance();
+                            final int grade=getMarkData.getData().getMarkData().getGrade();
+                            Log.d(TAG, "评分数据onResponse: GetStudyTimeData："+" dateText="+dateText+" 柱状图数据scores.size()="+scores.size()+" average="+average+" variance="+variance+" grade="+grade);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    boolean is=false;
+                                    for (Float data:scores) {
+                                        if (data>0){
+                                            is=true;
+                                        }
+                                    }
+                                    if (is){
+                                        barchart_data_score.setVisibility(View.VISIBLE);
+                                        image_score_nodata.setVisibility(View.GONE);
+                                        showBarChart(scores);//柱状图
+                                    }else {
+                                        barchart_data_score.setVisibility(View.GONE);
+                                        image_score_nodata.setVisibility(View.VISIBLE);
+                                        Glide.with(DataScore.this).load(R.drawable.nodata).into(image_score_nodata);
+                                    }
+
+                                    tx_data_score_average.setText(String.valueOf(average));//总时长
+                                    tx_data_score_variance.setText(String.valueOf(variance));//平均值
+                                    Utils.setGradeShow(grade,star21,star22,star23,star24,star25);//等级设置
+                                }
+                            });
+                        }
+                    }else{
+                        showServiceInfo(getContext(),"服务器故障");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
+
+
 }

@@ -15,10 +15,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tz.intelligentdesklamp.R;
@@ -40,6 +42,7 @@ public class SettingFragment extends BaseFragment{
     private TaskAndTime taskAndTime;//存储任务项
     TodoListAdapter todoListAdapter;
 //    private Button bt_todo_item_edit;//编辑
+    ImageView image_efficency_background;
 
 
     @Override
@@ -47,7 +50,9 @@ public class SettingFragment extends BaseFragment{
         View view = View.inflate(mContext, R.layout.fragment_setting, null);
         lv_efficency_todo=(ListView)view.findViewById(R.id.lv_efficency_todo);
         bt_efficency_addtodo=(Button)view.findViewById(R.id.bt_efficency_addtodo);
+        image_efficency_background=(ImageView) view.findViewById(R.id.image_efficency_background);
 //        bt_todo_item_edit=(Button)view.findViewById(R.id.bt_todo_item_edit);//去除了编辑
+
 
         bt_efficency_addtodo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +154,10 @@ public class SettingFragment extends BaseFragment{
         try{
             Gson gson=new Gson();
             taskAndTimes=gson.fromJson(items,new TypeToken<List<TaskAndTime>>(){}.getType());
+            if (taskAndTimes.size()==0){
+                image_efficency_background.setVisibility(View.VISIBLE);
+                Glide.with(getContext()).load(R.drawable.plan_paper).into(image_efficency_background);
+            }
             todoListAdapter=new TodoListAdapter(getContext(),taskAndTimes);
             todoListAdapter.notifyDataSetChanged();
             lv_efficency_todo.setAdapter(todoListAdapter);

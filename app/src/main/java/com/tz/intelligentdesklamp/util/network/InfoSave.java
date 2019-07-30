@@ -31,12 +31,12 @@ public class InfoSave {
     //获取专注信息
     static String getFocusDataUrl=new String("http://134.175.68.103:9095/getFocusData");
     //获取坐姿数据
-    static String getSittingPostureDataUrl=new String("http://134.175.68.103:9095/getSittingPostureData");
-    public static String sittingPostureDataUrl="http://134.175.68.103:9095/getSittingPostureData";
+    public static String getSittingPostureDataUrl="http://134.175.68.103:9095/getSittingPostureData";
+
     //获取学习时长
-    static String getStudyTimeDataUrl=new String("http://134.175.68.103:9095/getStudyTimeData");
+    public static String getStudyTimeDataUrl=new String("http://134.175.68.103:9095/getStudyTimeData");
     //获取得分数据
-    static String getMarkDataUrl=new String("http://134.175.68.103:9095/getMarkData");
+    public static String getMarkDataUrl=new String("http://134.175.68.103:9095/getMarkData");
 
     //番茄钟开始
     static String beginUrl=new String("http://134.175.68.103:9095/begin");

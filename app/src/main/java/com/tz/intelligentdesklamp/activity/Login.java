@@ -34,8 +34,6 @@ import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static android.content.Context.MODE_PRIVATE;
-
 public class Login extends BaseActivity implements View.OnClickListener {
 
     private  static String token=null;

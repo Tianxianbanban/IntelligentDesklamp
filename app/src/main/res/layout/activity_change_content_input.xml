@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
     <android.support.v7.widget.Toolbar
         android:background="@color/colorLightBlue"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <LinearLayout
@@ -14,7 +16,7 @@
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="10dp">
+            android:layout_height="20dp">
         </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -27,6 +29,7 @@
                 <Button
                     android:id="@+id/bt_change_content_back"
                     android:background="@drawable/left"
+                    android:layout_marginLeft="20dp"
                     android:layout_width="30dp"
                     android:layout_height="30dp" />
                 <TextView
@@ -49,19 +52,46 @@
         </RelativeLayout>
     </LinearLayout>
     </android.support.v7.widget.Toolbar>
-    <LinearLayout
+    <FrameLayout
         android:layout_margin="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <EditText
-            android:id="@+id/et_change_content"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:maxLength="100"
-            android:singleLine="true"
-            android:hint="请输入修改内容"/>
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/et_change_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:maxLength="100"
+                android:singleLine="true"
+                android:hint="请输入修改内容"/>
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/rbtgroup_change_sex"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/rbt_change_sex_male"
+                android:text="男孩子"
+                android:checked="false"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/rbt_change_sex_female"
+                android:text="女孩子"
+                android:checked="false"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+        </RadioGroup>
+
+    </FrameLayout>
+
 
 
 </LinearLayout>

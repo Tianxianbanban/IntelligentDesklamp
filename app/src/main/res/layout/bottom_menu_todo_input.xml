@@ -22,7 +22,7 @@
                 android:id="@+id/tx_todo_save"
                 android:clickable="true"
                 android:text="保存"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorPrimary"
                 android:textSize="20sp"
                 android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
@@ -38,12 +38,14 @@
                 android:id="@+id/et_todo_taskinput"
                 android:hint="任务添加…"
                 android:maxLines="2"
+                android:theme="@style/MyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <EditText
                 android:id="@+id/et_todo_timeinput"
                 android:hint="填写预估时间(分钟)…"
                 android:maxLines="1"
+                android:theme="@style/MyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>

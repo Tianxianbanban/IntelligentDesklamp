@@ -29,6 +29,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -109,6 +112,8 @@ public class PlanFragment extends BaseFragment implements View.OnClickListener {
 
     //背景图云
     private ImageView image_show_cloud;
+    private ImageView image_show_cloud_1;
+    private ImageView image_show_cloud_2;
 
     //currentInfoPopWindow中的4个泡泡
     private TextView tv_current_info_brightness;
@@ -301,8 +306,16 @@ public class PlanFragment extends BaseFragment implements View.OnClickListener {
 //        });
 
         //云
+        TranslateAnimation translateAnimation = new TranslateAnimation(Animation.ABSOLUTE, 0, Animation.RELATIVE_TO_SELF, 1, Animation.ABSOLUTE, 0, Animation.RELATIVE_TO_SELF, 0.5f);
+        translateAnimation.setDuration(100000);
         image_show_cloud=view.findViewById(R.id.image_show_cloud);
-        Glide.with(getContext()).load(R.drawable.cloud).into(image_show_cloud);
+        image_show_cloud_1=view.findViewById(R.id.image_show_cloud_1);
+        image_show_cloud_2=view.findViewById(R.id.image_show_cloud_2);
+        Glide.with(getContext()).load(R.drawable.cloud).animate(translateAnimation).into(image_show_cloud);
+        Glide.with(getContext()).load(R.drawable.cloud_1).animate(translateAnimation).into(image_show_cloud_1);
+        Glide.with(getContext()).load(R.drawable.cloud_1).animate(translateAnimation).into(image_show_cloud_2);
+
+
 
         // ========= 模式 =========
         fl_mode = view.findViewById(R.id.fl_mode);

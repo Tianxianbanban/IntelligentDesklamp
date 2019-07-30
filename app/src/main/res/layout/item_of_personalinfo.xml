@@ -30,8 +30,13 @@
                 android:layout_width="0dp"
                 android:layout_weight="5"
                 android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/image_personalInfo_sex"
+                    android:layout_gravity="center"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
                 <TextView
-                    android:text="content"
+                    android:text=""
                     android:layout_gravity="center"
                     android:textSize="@dimen/personalinfo_right"
                     android:id="@+id/tx_personalInfo_content"
