@@ -365,7 +365,8 @@ public class TodoItemStart extends BaseActivity implements View.OnClickListener{
         tx_efficiency_start_task=(TextView)findViewById(R.id.tx_efficiency_start_task) ;//当前任务
         tx_todoitemstart_time=(TextView)findViewById(R.id.tx_todoitemstart_time);
         //初始番茄钟时间
-        limitSec=25;
+        limitSec=1;
+//        limitSec=25;
         limitSecMili=limitSec*60;
         seconds=limitSecMili%60;//显示的秒数
         min=(limitSecMili/60)%60;//显示分钟数
